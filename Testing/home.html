@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moments Events - Premium Event Planning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(to bottom, rgb(255, 255, 255), #ffffff, rgb(255, 255, 255));
+        }
+
+        .hero-pattern {
+            background-color: #ffffff;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f472b6' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .event-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hero Slider */
+        .hero-slider {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .animate-fade-in-left {
+            animation: fadeInLeft 1s ease-out forwards;
+        }
+
+        .animate-fade-in-right {
+            animation: fadeInRight 1s ease-out forwards;
+        }
+
+        /* Map Container */
+        .map-container {
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form styling */
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section spacing */
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Delay utilities for animations */
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        .delay-400 {
+            animation-delay: 400ms;
+        }
+
+        .delay-500 {
+            animation-delay: 500ms;
+        }
+
+        /* Overlay for better text visibility on hero images */
+        .dark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 2, 2, 0);
+        }
+
+        /* Event Booking Styles */
+        .event-booking-container {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            color: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .seat {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .available {
+            background-color: #3ed84b;
+        }
+
+        .selected {
+            background-color: #3b82f6;
+        }
+
+        .occupied {
+            background-color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .vip {
+            background-color: #f59e0b;
+        }
+
+        .ticket {
+            background: linear-gradient(to right, #fdf2f8, #fce7f3);
+            border-left: 5px solid #fbe64c;
+            border-radius: 8px;
+        }
+
+        .booking-processor {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Service Page Styles */
+        .service-category {
+            transition: all 0.3s ease;
+        }
+
+        .service-category:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-option {
+            transition: all 0.3s ease;
+        }
+
+        .service-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-option {
+            transition: all 0.2s ease;
+        }
+
+        .filter-option:hover,
+        .filter-option.active {
+            background-color: #fde54d;
+            color: white;
+        }
+
+        .service-page {
+            display: none;
+        }
+
+        .service-page.active {
+            display: block;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #fde444, #f65c5c);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-window.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(to right, #efd542, #f6695c);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+        }
+
+        .bot-message {
+            background: #f1f5f9;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: linear-gradient(to right, #fdcc44, #f6835c);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chatbot-input button {
+            margin-left: 10px;
+            background: linear-gradient(to right, #f9ce3f, #f6715c);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        /* Feedback Modal */
+        .feedback-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .feedback-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgb(237, 189, 46);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .feedback-modal.active .feedback-content {
+            transform: translateY(0);
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .star {
+            font-size: 30px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star.active {
+            color: #e8e41f;
+        }
+
+        /* Event Ticket Styles */
+        .ticket-page {
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            border-left: 5px solid #ecc348;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket-page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 30%;
+            width: 40%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(0, 0, 0, 0.1) 10px,
+                    rgba(0, 0, 0, 0.1) 20px);
+            opacity: 0.1;
+        }
+
+        .qr-code {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .available {
+            color: #22c55e79;
+            font-weight: bold;
+        }
+
+        .seat-option {
+            transition: all 0.3s ease;
+        }
+
+        .seat-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .seat-option.selected {
+            border: 2px solid #f3c34b;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .time-slot {
+            transition: all 0.3s ease;
+        }
+
+        .time-slot:hover,
+        .time-slot.selected {
+            background-color: #fbd04d;
+            color: white;
+        }
+
+        /* New header styles */
+        .new-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 250px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 8px 8px;
+            padding: 1rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 101;
+        }
+
+        .dropdown-menu.active {
+            display: flex;
+        }
+
+        .dropdown-menu a {
+            color: #4a5568;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f7fafc;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .plan-button {
+            background: #ecd148;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+        }
+
+        .plan-button:hover {
+            background: #f0c536;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 200px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            z-index: 102;
+        }
+
+        .user-dropdown.active {
+            display: flex;
+        }
+
+        .user-dropdown a {
+            color: #4a5568;
+            padding: 0.5rem;
+            text-decoration: none;
+        }
+
+        .user-dropdown a:hover {
+            background: #f7fafc;
+        }
+
+        /* Testimonials auto-scroll */
+        .testimonial-slider {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .testimonial-track {
+            display: inline-block;
+            animation: scrollTestimonials 30s linear infinite;
+        }
+
+        .testimonial-track:hover {
+            animation-play-state: paused;
+        }
+
+        .testimonial-card {
+            display: inline-block;
+            width: 300px;
+            margin: 0 15px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            white-space: normal;
+            vertical-align: top;
+        }
+
+        @keyframes scrollTestimonials {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Brand partners slider */
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .brand-slider {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .brand-slider:hover .brand-track {
+            animation-play-state: paused;
+        }
+
+        .brand-track {
+            display: inline-block;
+            animation: slide 20s linear infinite;
+        }
+
+        .brand-logo {
+            display: inline-block;
+            margin: 0 30px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: filter 0.3s, opacity 0.3s;
+            height: 60px;
+            width: auto;
+        }
+
+        .brand-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- New Header -->
+    <header class="new-header">
+        <!-- Left: Hamburger Menu -->
+        <div class="relative">
+            <i class="fas fa-bars menu-icon" id="menuToggle"></i>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#home" onclick="closeMenu()">Home</a>
+                <a href="#events" onclick="closeMenu()">Events</a>
+                <a href="#services" onclick="closeMenu()">Services</a>
+                <a href="#gallery" onclick="closeMenu()">Gallery</a>
+                <a href="#testimonials" onclick="closeMenu()">Testimonials</a>
+                <a href="#about" onclick="closeMenu()">About</a>
+                <a href="#contact" onclick="closeMenu()">Contact</a>
+                <!-- Add any other header links here -->
+            </div>
+        </div>
+
+        <!-- Center: Logo (Rolex PNG placeholder) -->
+        <div class="logo">
+            <img src="D:\My Projects\Event Website\Testing\MOments.png" alt="Rolex Logo"
+                onerror="this.src='https://via.placeholder.com/150x50?text=ROLEX'">
+        </div>
+
+        <!-- Right: Plan Your Event Button -->
+        <div class="relative">
+            <button class="plan-button" id="planEventBtn" onclick="toggleLoginModal()">Plan Your Event</button>
+            <div class="user-dropdown" id="userDropdown">
+                <a href="#" onclick="showUserDashboard()">My Dashboard</a>
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal"
+        style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:2000;">
+        <div class="modal-content"
+            style="background:white; padding:2rem; border-radius:12px; max-width:400px; width:90%;">
+            <h2 class="text-2xl font-bold mb-4 text-center">Login / Register</h2>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Email</label>
+                <input type="email" id="loginEmail" class="w-full px-4 py-2 border rounded-lg"
+                    placeholder="Enter email">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Password</label>
+                <input type="password" id="loginPassword" class="w-full px-4 py-2 border rounded-lg"
+                    placeholder="Enter password">
+            </div>
+            <div class="flex justify-between mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" id="isVendor" class="mr-2"> <span>Vendor?</span>
+                </label>
+                <a href="#" class="text-rose-600 text-sm">Forgot password?</a>
+            </div>
+            <button onclick="handleLogin()"
+                class="w-full py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700">Login</button>
+            <p class="text-center mt-4 text-sm">Don't have an account? <a href="#" onclick="alert('Register demo')"
+                    class="text-rose-600">Register</a></p>
+            <button onclick="closeLoginModal()" class="absolute top-2 right-2 text-slate-500"><i
+                    class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section with Slider -->
+        <section id="home" class="hero-slider">
+            <!-- Background slides -->
+            <div class="slide active"
+                style="background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80')">
+            </div>
+            <div class="slide"
+                style="background-image: url('https://images.unsplash.com/photo-1527525443983-6e60c75fff46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2055&q=80')">
+            </div>
+            <div class="slide"
+                style="background-image: url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')">
+            </div>
+            <div class="slide"
+                style="background-image: url('https://images.unsplash.com/photo-1567942712661-82b9b407abbf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80')">
+            </div>
+            <div class="dark-overlay"></div>
+
+            <!-- Hero content -->
+            <div class="relative z-10 h-full flex items-center">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <div class="max-w-2xl text-white">
+                        <h1
+                            class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-up">
+                            Create Unforgettable Moments</h1>
+                        <p class="text-xl md:text-2xl mb-8 animate-fade-in-up delay-300">Professional event planning for
+                            weddings, corporate events, and special celebrations</p>
+                        <div class="flex flex-wrap gap-4 animate-fade-in-up delay-500">
+                            <a href="#events"
+                                class="px-6 py-3 rounded-lg bg-rose-600 text-white font-medium shadow-md hover:bg-rose-700 transition-colors">Book
+                                Events</a>
+                            <a href="#services"
+                                class="px-6 py-3 rounded-lg border border-white text-white font-medium hover:bg-white/10 transition-colors">Our
+                                Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="py-16 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 animate-fade-in-up">Upcoming Events
+                    </h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto animate-fade-in-up delay-200">Discover and
+                        book tickets for our exciting upcoming events</p>
+                </div>
+
+                <!-- Event Cards -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Event Card 1 - Clickable -->
+                    <div class="event-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer"
+                        onclick="showEventDetails('summerFestival')">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                            alt="Summer Music Festival" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-semibold text-slate-800">Summer Music Festival</h3>
+                                <span
+                                    class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Available</span>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-4">A weekend of amazing music performances with top
+                                artists</p>
+                            <div class="flex items-center text-slate-500 text-sm mb-2">
+                                <i class="fas fa-map-marker-alt mr-2 text-rose-500"></i>
+                                <span>City Central Park</span>
+                            </div>
+                            <div class="flex items-center text-slate-500 text-sm mb-4">
+                                <i class="fas fa-calendar-alt mr-2 text-rose-500"></i>
+                                <span>July 15-16, 2023</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-rose-600">₹599</span>
+                                <span class="text-sm text-slate-500">onwards</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 2 -->
+                    <div class="event-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer"
+                        onclick="showEventDetails('comedyNight')">
+                        <img src="https://images.unsplash.com/photo-1549576490-b0b4831ef60a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                            alt="Comedy Night Special" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-semibold text-slate-800">Comedy Night Special</h3>
+                                <span
+                                    class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Available</span>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-4">An evening of laughter with renowned comedians</p>
+                            <div class="flex items-center text-slate-500 text-sm mb-2">
+                                <i class="fas fa-map-marker-alt mr-2 text-rose-500"></i>
+                                <span>Downtown Comedy Club</span>
+                            </div>
+                            <div class="flex items-center text-slate-500 text-sm mb-4">
+                                <i class="fas fa-calendar-alt mr-2 text-rose-500"></i>
+                                <span>July 20, 2023</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-rose-600">₹399</span>
+                                <span class="text-sm text-slate-500">onwards</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 3 -->
+                    <div class="event-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer"
+                        onclick="showEventDetails('artExhibition')">
+                        <img src="https://images.unsplash.com/photo-1518998053901-5348d3961a04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80"
+                            alt="Art Exhibition Opening" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-semibold text-slate-800">Art Exhibition Opening</h3>
+                                <span
+                                    class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Available</span>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-4">Exclusive preview of contemporary art pieces</p>
+                            <div class="flex items-center text-slate-500 text-sm mb-2">
+                                <i class="fas fa-map-marker-alt mr-2 text-rose-500"></i>
+                                <span>Modern Art Gallery</span>
+                            </div>
+                            <div class="flex items-center text-slate-500 text-sm mb-4">
+                                <i class="fas fa-calendar-alt mr-2 text-rose-500"></i>
+                                <span>July 22, 2023</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-rose-600">₹299</span>
+                                <span class="text-sm text-slate-500">onwards</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Detail Page (Hidden by default) -->
+        <section id="eventDetail" class="py-12 bg-white hidden">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <button onclick="hideEventDetails()" class="mb-6 flex items-center text-rose-600 font-semibold">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Events
+                </button>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <img id="eventImage" src="" alt="Event" class="rounded-2xl shadow-lg w-full">
+                    </div>
+                    <div>
+                        <h1 id="eventTitle" class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Summer Music
+                            Festival</h1>
+                        <div class="flex items-center text-slate-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span id="eventVenue">City Central Park, Vijayawada</span>
+                        </div>
+                        <div class="flex items-center text-slate-600 mb-4">
+                            <i class="fas fa-language mr-2"></i>
+                            <span id="eventLanguage">English, Hindi, Telugu</span>
+                        </div>
+                        <div class="flex items-center text-slate-600 mb-4">
+                            <i class="fas fa-calendar-day mr-2"></i>
+                            <span id="eventDate">July 15, 2023</span>
+                        </div>
+                        <div class="flex items-center text-slate-600 mb-6">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span id="eventDuration">3 Hours (6:00 PM - 9:00 PM)</span>
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="text-xl font-semibold text-slate-800 mb-2">About the Event</h2>
+                            <p id="eventDescription" class="text-slate-600">A weekend of amazing music performances with
+                                top artists from across the country.</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="text-xl font-semibold text-slate-800 mb-2">Performers</h2>
+                            <ul id="eventPerformers" class="text-slate-600">
+                                <li class="mb-2">• A.R. Rahman (Music Composer)</li>
+                                <li class="mb-2">• Shreya Ghoshal (Playback Singer)</li>
+                                <li class="mb-2">• Local Band Performances</li>
+                            </ul>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <span id="eventPrice" class="text-2xl font-bold text-slate-800">₹599</span>
+                                <span class="text-sm text-slate-500">onwards</span>
+                            </div>
+                            <div class="available">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="ml-1">Available</span>
+                            </div>
+                        </div>
+
+                        <button onclick="showTimeSlots()"
+                            class="w-full py-3 bg-rose-600 text-white font-semibold rounded-lg shadow-md hover:bg-rose-700 transition-colors">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Time Slot Selection (Hidden Initially) -->
+        <section id="timeSlotSection" class="py-12 bg-slate-50 hidden">
+            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-8 text-center">Select a Time Slot</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="time-slot p-4 bg-white rounded-lg text-center cursor-pointer shadow-md"
+                        onclick="selectTimeSlot(this, 'Evening Show', '6:00 PM')">
+                        <div class="font-semibold">Evening Show</div>
+                        <div class="text-sm text-slate-600">6:00 PM</div>
+                    </div>
+                    <div class="time-slot p-4 bg-white rounded-lg text-center cursor-pointer shadow-md"
+                        onclick="selectTimeSlot(this, 'Night Show', '8:00 PM')">
+                        <div class="font-semibold">Night Show</div>
+                        <div class="text-sm text-slate-600">8:00 PM</div>
+                    </div>
+                    <div class="time-slot p-4 bg-white rounded-lg text-center cursor-pointer shadow-md"
+                        onclick="selectTimeSlot(this, 'Late Night', '10:00 PM')">
+                        <div class="font-semibold">Late Night</div>
+                        <div class="text-sm text-slate-600">10:00 PM</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Select Your Ticket Type</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="seat-option p-6 border border-slate-200 rounded-xl text-center cursor-pointer"
+                            onclick="selectTicketType('premium')">
+                            <div class="font-bold text-lg text-slate-800 mb-2">Premium</div>
+                            <div class="text-2xl font-bold text-rose-600 mb-2">₹299</div>
+                            <ul class="text-sm text-slate-600 text-left mt-4">
+                                <li class="mb-2">• Standard seating</li>
+                                <li class="mb-2">• Good view of stage</li>
+                                <li>• Basic amenities</li>
+                            </ul>
+                        </div>
+
+                        <div class="seat-option p-6 border border-slate-200 rounded-xl text-center cursor-pointer"
+                            onclick="selectTicketType('vip')">
+                            <div class="font-bold text-lg text-slate-800 mb-2">VIP</div>
+                            <div class="text-2xl font-bold text-rose-600 mb-2">₹599</div>
+                            <ul class="text-sm text-slate-600 text-left mt-4">
+                                <li class="mb-2">• Front row seating</li>
+                                <li class="mb-2">• Best view of stage</li>
+                                <li class="mb-2">• Complimentary drinks</li>
+                                <li>• VIP lounge access</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button onclick="showPaymentSection()" id="proceedToPaymentBtn"
+                        class="w-full py-3 bg-rose-600 text-white font-semibold rounded-lg shadow-md hover:bg-rose-700 transition-colors">
+                        Proceed to Payment
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Section (Hidden Initially) -->
+        <section id="paymentSection" class="py-12 bg-white hidden">
+            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-8 text-center">Complete Your Payment</h2>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-2">Order Summary</h3>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-slate-600" id="ticketTypeDisplay">Summer Music Festival Ticket
+                                (VIP)</span>
+                            <span class="font-semibold" id="ticketPriceDisplay">₹599</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-slate-600">Booking Fee</span>
+                            <span class="font-semibold">₹49</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-slate-600">Taxes</span>
+                            <span class="font-semibold">₹72</span>
+                        </div>
+                        <div class="border-t pt-2 mt-2">
+                            <div class="flex justify-between font-bold text-lg">
+                                <span>Total</span>
+                                <span id="totalAmount">₹720</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Payment Method</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="border border-slate-200 rounded-lg p-4 text-center cursor-pointer hover:border-rose-500"
+                                onclick="selectPaymentMethod('credit')">
+                                <i class="fas fa-credit-card text-2xl text-slate-700 mb-2"></i>
+                                <div class="text-sm">Credit Card</div>
+                            </div>
+                            <div class="border border-slate-200 rounded-lg p-4 text-center cursor-pointer hover:border-rose-500"
+                                onclick="selectPaymentMethod('paypal')">
+                                <i class="fab fa-paypal text-2xl text-blue-600 mb-2"></i>
+                                <div class="text-sm">PayPal</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="border border-slate-200 rounded-lg p-4 text-center cursor-pointer hover:border-rose-500"
+                                onclick="selectPaymentMethod('googlepay')">
+                                <i class="fab fa-google-pay text-2xl text-blue-500 mb-2"></i>
+                                <div class="text-sm">Google Pay</div>
+                            </div>
+                            <div class="border border-slate-200 rounded-lg p-4 text-center cursor-pointer hover:border-rose-500"
+                                onclick="selectPaymentMethod('upi')">
+                                <i class="fas fa-mobile-alt text-2xl text-purple-600 mb-2"></i>
+                                <div class="text-sm">UPI</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Card Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Card Number</label>
+                                <input type="text"
+                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                    placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Expiry Date</label>
+                                    <input type="text"
+                                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                        placeholder="MM/YY">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">CVV</label>
+                                    <input type="text"
+                                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                        placeholder="123">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Cardholder Name</label>
+                                <input type="text"
+                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                    placeholder="John Doe">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="generateTicket()"
+                        class="w-full py-3 bg-rose-600 text-white font-semibold rounded-lg shadow-md hover:bg-rose-700 transition-colors">
+                        Make Payment
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ticket Section (Hidden Initially) -->
+        <section id="ticketSection" class="py-12 bg-gradient-to-b from-rose-50 to-purple-50 hidden">
+            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-8 text-center">Your Ticket</h2>
+
+                <div class="ticket-page p-8 shadow-2xl">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-800" id="ticketEventName">Summer Music Festival
+                            </h1>
+                            <p class="text-slate-600" id="ticketVenue">City Central Park, Vijayawada</p>
+                        </div>
+                        <div class="qr-code">
+                            <!-- Simple QR code representation -->
+                            <div class="grid grid-cols-4 gap-1 w-24 h-24 bg-white p-2">
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-white"></div>
+                                <div class="bg-white"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-white"></div>
+                                <div class="bg-white"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                                <div class="bg-black"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <p class="text-sm text-slate-500">Date & Time</p>
+                            <p class="font-semibold" id="ticketDateTime">July 15, 2023 at 8:00 PM</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Ticket Type</p>
+                            <p class="font-semibold" id="ticketType">VIP</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Seat</p>
+                            <p class="font-semibold" id="ticketSeat">VIP-12</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Order ID</p>
+                            <p class="font-semibold" id="ticketOrderId">BK927416</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-dashed border-slate-300 pt-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-slate-500">Attendee</p>
+                                <p class="font-semibold" id="ticketAttendee">Rahul Sharma</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-slate-500">Total Paid</p>
+                                <p class="font-semibold text-lg" id="ticketTotal">₹720</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-sm text-slate-500">Present this ticket at the venue entry</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <button onclick="downloadTicket()"
+                        class="px-6 py-3 bg-white text-rose-600 font-semibold rounded-lg shadow-md border border-rose-200 hover:bg-rose-50 transition-colors mr-4">
+                        <i class="fas fa-download mr-2"></i>Download Ticket
+                    </button>
+                    <button onclick="shareTicket()"
+                        class="px-6 py-3 bg-rose-600 text-white font-semibold rounded-lg shadow-md hover:bg-rose-700 transition-colors">
+                        <i class="fas fa-share-alt mr-2"></i>Share Ticket
+                    </button>
+                </div>
+
+                <div class="text-center mt-6">
+                    <button onclick="resetBooking()" class="text-rose-600 hover:text-rose-700">
+                        <i class="fas fa-arrow-left mr-2"></i> Book Another Event
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 animate-fade-in-up">Our Services</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto animate-fade-in-up delay-200">We offer
+                        comprehensive event planning services to make your special day truly memorable</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Wedding Planning -->
+                    <div class="service-category event-card bg-white rounded-xl overflow-hidden shadow-lg border border-slate-100 cursor-pointer"
+                        onclick="showServicePage('wedding')">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                            alt="Wedding Planning" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div
+                                class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-4">
+                                <i class="fas fa-ring text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Wedding Planning</h3>
+                            <p class="text-slate-600">Complete wedding planning and coordination services to make your
+                                special day perfect.</p>
+                        </div>
+                    </div>
+
+                    <!-- Corporate Events -->
+                    <div class="service-category event-card bg-white rounded-xl overflow-hidden shadow-lg border border-slate-100 cursor-pointer"
+                        onclick="showServicePage('corporate')">
+                        <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-4.0.3&auto=format&fit=crop&w=2080&q=80"
+                            alt="Corporate Events" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div
+                                class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-4">
+                                <i class="fas fa-briefcase text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Corporate Events</h3>
+                            <p class="text-slate-600">Professional corporate event planning for conferences, seminars,
+                                and company events.</p>
+                        </div>
+                    </div>
+
+                    <!-- Birthday Parties -->
+                    <div class="service-category event-card bg-white rounded-xl overflow-hidden shadow-lg border border-slate-100 cursor-pointer"
+                        onclick="showServicePage('birthday')">
+                        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                            alt="Birthday Parties" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div
+                                class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-4">
+                                <i class="fas fa-cake-candles text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Birthday Parties</h3>
+                            <p class="text-slate-600">Creative and fun birthday party planning for all ages and themes.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Anniversaries -->
+                    <div class="service-category event-card bg-white rounded-xl overflow-hidden shadow-lg border border-slate-100 cursor-pointer"
+                        onclick="showServicePage('anniversary')">
+                        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80"
+                            alt="Anniversaries" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div
+                                class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-4">
+                                <i class="fas fa-glass-cheers text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Anniversaries</h3>
+                            <p class="text-slate-600">Elegant anniversary celebrations to commemorate your special
+                                milestones.</p>
+                        </div>
+                    </div>
+
+                    <!-- Movie Events -->
+                    <div class="service-category event-card bg-white rounded-xl overflow-hidden shadow-lg border border-slate-100 cursor-pointer"
+                        onclick="showServicePage('movie')">
+                        <img src="https://images.unsplash.com/photo-1489599102910-59206b8ca314?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                            alt="Movie Events" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div
+                                class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-4">
+                                <i class="fas fa-film text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Movie Events</h3>
+                            <p class="text-slate-600">Premieres, screenings, and movie-themed events with complete
+                                planning.</p>
+                        </div>
+                    </div>
+
+                    <!-- Themed Parties -->
+                    <div class="service-category event-card bg-white rounded-xl overflow-hidden shadow-lg border border-slate-100 cursor-pointer"
+                        onclick="showServicePage('themed')">
+                        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                            alt="Themed Parties" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div
+                                class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-4">
+                                <i class="fas fa-mask text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Themed Parties</h3>
+                            <p class="text-slate-600">Unique and creative themed parties tailored to your specific
+                                interests.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wedding Planning Service Page -->
+        <section id="wedding-service" class="service-page py-12 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <button onclick="hideServicePage()"
+                    class="back-button mb-6 flex items-center text-rose-600 font-semibold">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Services
+                </button>
+
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Wedding Planning Services</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Complete wedding planning and coordination
+                        services to make your special day perfect</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm mb-8">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Filter Options</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="filter-option px-4 py-2 bg-slate-100 rounded-full cursor-pointer active"
+                            onclick="filterServices('all', this)">All</div>
+                        <div class="filter-option px-4 py-2 bg-slate-100 rounded-full cursor-pointer"
+                            onclick="filterServices('indoor', this)">Indoor</div>
+                        <div class="filter-option px-4 py-2 bg-slate-100 rounded-full cursor-pointer"
+                            onclick="filterServices('outdoor', this)">Outdoor</div>
+                        <div class="filter-option px-4 py-2 bg-slate-100 rounded-full cursor-pointer"
+                            onclick="filterServices('under50k', this)">Under ₹50,000</div>
+                        <div class="filter-option px-4 py-2 bg-slate-100 rounded-full cursor-pointer"
+                            onclick="filterServices('50kto1lac', this)">₹50,000 - ₹1,00,000</div>
+                        <div class="filter-option px-4 py-2 bg-slate-100 rounded-full cursor-pointer"
+                            onclick="filterServices('over1lac', this)">Over ₹1,00,000</div>
+                    </div>
+                </div>
+
+                <!-- Service Categories -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-semibold text-slate-800 mb-6">Service Categories</h3>
+
+                    <!-- Stage Decoration -->
+                    <div class="mb-10">
+                        <h4 class="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+                            <i class="fas fa-feather-alt text-rose-600 mr-3"></i> Stage Decoration
+                        </h4>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Option 1 -->
+                            <div
+                                class="service-option bg-white rounded-xl overflow-hidden shadow-md border border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80"
+                                    alt="Royal Stage Setup" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h5 class="font-semibold text-slate-800 mb-2">Royal Stage Setup</h5>
+                                    <p class="text-slate-600 text-sm mb-3">Elegant royal theme with premium fabrics and
+                                        floral arrangements</p>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-rose-600 font-bold">₹85,000</span>
+                                        <span
+                                            class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Indoor</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-slate-500">
+                                        <i class="fas fa-user-circle mr-2"></i>
+                                        <span>Raj Decorations - 9848012345</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Option 2 -->
+                            <div
+                                class="service-option bg-white rounded-xl overflow-hidden shadow-md border border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1519677100203-a0e668c92439?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                                    alt="Garden Theme Stage" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h5 class="font-semibold text-slate-800 mb-2">Garden Theme Stage</h5>
+                                    <p class="text-slate-600 text-sm mb-3">Natural garden theme with fresh flowers and
+                                        greenery</p>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-rose-600 font-bold">₹65,000</span>
+                                        <span
+                                            class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">Outdoor</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-slate-500">
+                                        <i class="fas fa-user-circle mr-2"></i>
+                                        <span>Green Decor - 9848023456</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Option 3 -->
+                            <div
+                                class="service-option bg-white rounded-xl overflow-hidden shadow-md border border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1549576490-b0b4831ef60a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                                    alt="Modern Minimalist Stage" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h5 class="font-semibold text-slate-800 mb-2">Modern Minimalist Stage</h5>
+                                    <p class="text-slate-600 text-sm mb-3">Clean lines and contemporary design with
+                                        subtle elegance</p>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-rose-600 font-bold">₹55,000</span>
+                                        <span
+                                            class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Indoor</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-slate-500">
+                                        <i class="fas fa-user-circle mr-2"></i>
+                                        <span>Modern Events - 9848034567</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lighting -->
+                    <div class="mb-10">
+                        <h4 class="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+                            <i class="fas fa-lightbulb text-rose-600 mr-3"></i> Lighting
+                        </h4>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Option 1 -->
+                            <div
+                                class="service-option bg-white rounded-xl overflow-hidden shadow-md border border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                                    alt="LED Fairy Light Setup" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h5 class="font-semibold text-slate-800 mb-2">LED Fairy Light Setup</h5>
+                                    <p class="text-slate-600 text-sm mb-3">Magical atmosphere with thousands of fairy
+                                        lights</p>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-rose-600 font-bold">₹35,000</span>
+                                        <span
+                                            class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Indoor/Outdoor</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-slate-500">
+                                        <i class="fas fa-user-circle mr-2"></i>
+                                        <span>Bright Events - 9848045678</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Option 2 -->
+                            <div
+                                class="service-option bg-white rounded-xl overflow-hidden shadow-md border border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80"
+                                    alt="Chandelier Lighting" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h5 class="font-semibold text-slate-800 mb-2">Chandelier Lighting</h5>
+                                    <p class="text-slate-600 text-sm mb-3">Elegant chandeliers for a luxurious
+                                        atmosphere</p>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-rose-600 font-bold">₹45,000</span>
+                                        <span
+                                            class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Indoor</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-slate-500">
+                                        <i class="fas fa-user-circle mr-2"></i>
+                                        <span>Luxury Lights - 9848056789</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Option 3 -->
+                            <div
+                                class="service-option bg-white rounded-xl overflow-hidden shadow-md border border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-4.0.3&auto=format&fit=crop&w=2080&q=80"
+                                    alt="Color Laser Show" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h5 class="font-semibold text-slate-800 mb-2">Color Laser Show</h5>
+                                    <p class="text-slate-600 text-sm mb-3">Dynamic laser effects with synchronized music
+                                    </p>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-rose-600 font-bold">₹60,000</span>
+                                        <span
+                                            class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">Outdoor</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-slate-500">
+                                        <i class="fas fa-user-circle mr-2"></i>
+                                        <span>Tech Effects - 9848067890</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-16 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 animate-fade-in-up">Our Gallery</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto animate-fade-in-up delay-200">A glimpse of
+                        our successfully executed events and celebrations</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80"
+                        class="rounded-lg shadow-md h-48 w-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1527525443983-6e60c75fff46?ixlib=rb-4.0.3&auto=format&fit=crop&w=2055&q=80"
+                        class="rounded-lg shadow-md h-48 w-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                        class="rounded-lg shadow-md h-48 w-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1567942712661-82b9b407abbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2073&q=80"
+                        class="rounded-lg shadow-md h-48 w-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section (Auto-scrolling) -->
+        <section id="testimonials" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 animate-fade-in-up">Client
+                        Testimonials</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto animate-fade-in-up delay-200">What our
+                        clients say about our event planning services</p>
+                </div>
+                <div class="testimonial-slider">
+                    <div class="testimonial-track" id="testimonial-track">
+                        <!-- Will be filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Partners Slider -->
+        <section id="partners" class="py-16 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-800 mb-4 animate-fade-in-up">Our
+                    Trusted Partners</h2>
+                <div class="brand-slider">
+                    <div class="brand-track" id="brand-track">
+                        <!-- Will be filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">About Moments Events</h2>
+                        <p class="text-lg text-slate-600 mb-4">Founded in 2010, Moments Events has been creating
+                            unforgettable experiences for clients across India. Our team of passionate event planners
+                            specializes in turning visions into reality.</p>
+                        <p class="text-lg text-slate-600 mb-4">With over 500 successful events to our credit, we pride
+                            ourselves on our attention to detail, creativity, and flawless execution.</p>
+                        <div class="grid grid-cols-2 gap-4 mt-8">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-rose-600">500+</div>
+                                <div class="text-slate-600">Events Organized</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-rose-600">12+</div>
+                                <div class="text-slate-600">Years Experience</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1581578021517-5d8ad8597858?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+                            alt="Our Team" class="rounded-2xl shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section with Map -->
+        <section id="contact" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 animate-fade-in-up">Get In Touch</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto animate-fade-in-up delay-200">Ready to plan
+                        your perfect event? Contact us today for a consultation.</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-12 items-start">
+                    <!-- Map Section -->
+                    <div class="animate-fade-in-left">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-6">Our Location</h3>
+                        <div class="map-container">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.841036986972!2d80.64621457569624!3d16.45046622424107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a35eff9484d5e0f%3A0xdf5c2baf8535dd3e!2sBenz%20Circle%2C%20Vijayawada%2C%20Andhra%20Pradesh!5e0!3m2!1sen!2sin!4v1688129322955!5m2!1sen!2sin"
+                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600">
+                                    📍</div>
+                                <div>
+                                    <div class="text-lg font-semibold text-slate-800">Vijayawada, Benz Circle</div>
+                                    <div class="text-sm text-slate-500">Office by appointment</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600">
+                                    📞</div>
+                                <div>
+                                    <div class="text-lg font-semibold text-slate-800">+91 98765 43210</div>
+                                    <div class="text-sm text-slate-500">Call us anytime</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600">
+                                    📧</div>
+                                <div>
+                                    <div class="text-lg font-semibold text-slate-800">hello@momentsevents.com</div>
+                                    <div class="text-sm text-slate-500">General inquiries</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="animate-fade-in-right">
+                        <div class="form-container" id="contactForm">
+                            <h3 class="text-2xl font-semibold text-slate-800 mb-6">Send us a message</h3>
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Name</label>
+                                <input type="text"
+                                    class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                    placeholder="Enter your name">
+                            </div>
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Email</label>
+                                <input type="email"
+                                    class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                    placeholder="Enter your email">
+                            </div>
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Phone</label>
+                                <input type="tel"
+                                    class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                    placeholder="Enter your phone">
+                            </div>
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Message</label>
+                                <textarea rows="4"
+                                    class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                                    placeholder="Tell us about your event..."></textarea>
+                            </div>
+                            <div class="mt-6">
+                                <button onclick="submitContactForm()"
+                                    class="w-full px-6 py-3 bg-rose-600 text-white font-medium rounded-lg hover:bg-rose-700 transition-colors">Send
+                                    message</button>
+                            </div>
+                        </div>
+
+                        <div class="form-container text-center hidden" id="thankYouMessage">
+                            <div
+                                class="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 text-2xl mx-auto mb-4">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h4 class="text-xl font-semibold text-rose-600">Thank you for your response!</h4>
+                            <p class="text-slate-600 mt-2">We will contact you within 24 hours with a quotation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-purple-500 flex items-center justify-center text-white font-bold">
+                            ME</div>
+                        <div class="font-bold text-lg">MOMENTS EVENTS</div>
+                    </div>
+                    <p class="text-slate-300">Creating unforgettable experiences and memories that last a lifetime.</p>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="text-slate-300 hover:text-rose-400 transition-colors"><i
+                                class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-rose-400 transition-colors"><i
+                                class="fab fa-instagram text-lg"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-rose-400 transition-colors"><i
+                                class="fab fa-twitter text-lg"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-rose-400 transition-colors"><i
+                                class="fab fa-linkedin-in text-lg"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-slate-300 hover:text-rose-400 transition-colors">Home</a></li>
+                        <li><a href="#events" class="text-slate-300 hover:text-rose-400 transition-colors">Events</a>
+                        </li>
+                        <li><a href="#services"
+                                class="text-slate-300 hover:text-rose-400 transition-colors">Services</a></li>
+                        <li><a href="#gallery" class="text-slate-300 hover:text-rose-400 transition-colors">Gallery</a>
+                        </li>
+                        <li><a href="#about" class="text-slate-300 hover:text-rose-400 transition-colors">About Us</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Our Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-300 hover:text-rose-400 transition-colors">Wedding
+                                Planning</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-rose-400 transition-colors">Corporate
+                                Events</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-rose-400 transition-colors">Birthday
+                                Parties</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-rose-400 transition-colors">Anniversaries</a>
+                        </li>
+                        <li><a href="#" class="text-slate-300 hover:text-rose-400 transition-colors">Movie Events</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-slate-300">
+                        <li class="flex items-start gap-3"><i
+                                class="fas fa-map-marker-alt mt-1 text-rose-400"></i><span>Vijayawada, Benz
+                                Circle</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-phone mt-1 text-rose-400"></i><span>+91
+                                98765 43210</span></li>
+                        <li class="flex items-start gap-3"><i
+                                class="fas fa-envelope mt-1 text-rose-400"></i><span>hello@momentsevents.com</span></li>
+                    </ul>
+                    <button onclick="openFeedbackModal()"
+                        class="mt-6 px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">
+                        <i class="fas fa-star mr-2"></i> Give Feedback
+                    </button>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 mt-10 pt-6 text-center text-slate-400 text-sm">
+                © 2023 Moments Events. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-button" onclick="toggleChatbot()">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div>
+                    <h3>Moments Events Assistant</h3>
+                    <p>Hi there! How can I help?</p>
+                </div>
+                <button onclick="toggleChatbot()" class="chatbot-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot-message">Hello! I'm your event planning assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message here...">
+                <button onclick="sendChatbotMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="feedback-modal" id="feedbackModal">
+        <div class="feedback-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Share Your Feedback</h2>
+                <button onclick="closeFeedbackModal()" class="text-slate-500 hover:text-slate-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Your Name</label>
+                    <input type="text"
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                        placeholder="Enter your name">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Your Email</label>
+                    <input type="email"
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                        placeholder="Enter your email">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Rate Your Experience</label>
+                    <div class="star-rating" id="starRating">
+                        <span class="star" onclick="rateStar(1)">★</span>
+                        <span class="star" onclick="rateStar(2)">★</span>
+                        <span class="star" onclick="rateStar(3)">★</span>
+                        <span class="star" onclick="rateStar(4)">★</span>
+                        <span class="star" onclick="rateStar(5)">★</span>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Your Feedback</label>
+                    <textarea
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                        rows="4" placeholder="Share your experience with us"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full py-3 bg-rose-600 text-white font-semibold rounded-lg shadow-md hover:bg-rose-700 transition-colors">Submit
+                    Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('menuToggle').addEventListener('click', function () {
+            document.getElementById('dropdownMenu').classList.toggle('active');
+        });
+        function closeMenu() {
+            document.getElementById('dropdownMenu').classList.remove('active');
+        }
+
+        // Hero Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 5000);
+
+        // Testimonials and Partners Data
+        const testimonials = [
+            { name: "Rajesh Kumar", role: "Wedding Client", text: "Moments Events made our wedding day absolutely perfect.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1287&q=80" },
+            { name: "Priya Singh", role: "Corporate Event Manager", text: "They always deliver beyond expectations.", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1288&q=80" },
+            { name: "Anil & Sunita", role: "Anniversary Celebration", text: "Our 25th anniversary was magical.", image: "https://images.unsplash.com/photo-1529066516367-36973222c957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" }
+        ];
+        const brandLogos = [
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/3840px-Coca-Cola_logo.svg.png",
+            "https://image4.owler.com/logo/shreyas-media_owler_20160302_003352_original.png",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1W30Shk3Iitt2b86eKJdG6OpNu6igbWq4TA&s",
+            "https://www.freepnglogos.com/uploads/sbi-logo-png/sbi-logo-state-bank-india-group-vector-eps-0.png"
+        ];
+
+        // Render Testimonials (auto-scroll)
+        function renderTestimonials() {
+            const track = document.getElementById('testimonial-track');
+            let cards = '';
+            for (let i = 0; i < 2; i++) { // duplicate for seamless loop
+                testimonials.forEach(t => {
+                    cards += `
+                        <div class="testimonial-card">
+                            <div class="flex items-center mb-4">
+                                <img src="${t.image}" class="w-12 h-12 rounded-full object-cover mr-4">
+                                <div>
+                                    <h4 class="font-semibold">${t.name}</h4>
+                                    <p class="text-sm text-slate-500">${t.role}</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-600">"${t.text}"</p>
+                        </div>
+                    `;
+                });
+            }
+            track.innerHTML = cards;
+        }
+
+        // Render Brand Partners (infinite scroll)
+        function renderBrands() {
+            const track = document.getElementById('brand-track');
+            let logos = '';
+            for (let i = 0; i < 10; i++) {
+                brandLogos.forEach(logo => {
+                    logos += `<img src="${logo}" class="brand-logo">`;
+                });
+            }
+            track.innerHTML = logos;
+        }
+
+        // Event Details
+        function showEventDetails(eventType) {
+            document.getElementById('events').classList.add('hidden');
+            document.getElementById('eventDetail').classList.remove('hidden');
+            // ... (rest of event detail setup)
+        }
+        function hideEventDetails() {
+            document.getElementById('events').classList.remove('hidden');
+            document.getElementById('eventDetail').classList.add('hidden');
+            document.getElementById('timeSlotSection').classList.add('hidden');
+            document.getElementById('paymentSection').classList.add('hidden');
+            document.getElementById('ticketSection').classList.add('hidden');
+        }
+
+        // Time Slot Selection
+        let selectedTimeSlot = null;
+        let selectedTicketType = null;
+        function selectTimeSlot(element, slotName, time) {
+            document.querySelectorAll('.time-slot').forEach(el => {
+                el.classList.remove('selected', 'bg-rose-600', 'text-white');
+            });
+            element.classList.add('selected', 'bg-rose-600', 'text-white');
+            selectedTimeSlot = { name: slotName, time: time };
+        }
+        function selectTicketType(type) {
+            document.querySelectorAll('.seat-option').forEach(el => {
+                el.classList.remove('selected');
+
+
+            });
+            event.target.closest('.seat-option').classList.add('selected');
+            selectedTicketType = type;
+        }
+        function showPaymentSection() {
+            if (!selectedTimeSlot || !selectedTicketType) {
+                alert('Please select both a time slot and ticket type');
+                return;
+            }
+            document.getElementById('timeSlotSection').classList.add('hidden');
+            document.getElementById('paymentSection').classList.remove('hidden');
+            const price = selectedTicketType === 'vip' ? '₹599' : '₹299';
+            const total = selectedTicketType === 'vip' ? '₹720' : '₹420';
+            document.getElementById('ticketTypeDisplay').textContent = `Summer Music Festival Ticket (${selectedTicketType === 'vip' ? 'VIP' : 'Premium'})`;
+            document.getElementById('ticketPriceDisplay').textContent = price;
+            document.getElementById('totalAmount').textContent = total;
+        }
+        function selectPaymentMethod(method) { console.log('Selected payment method:', method); }
+        function generateTicket() {
+            document.getElementById('paymentSection').classList.add('hidden');
+            document.getElementById('ticketSection').classList.remove('hidden');
+            const orderId = 'BK' + Math.floor(100000 + Math.random() * 900000);
+            const seatNum = selectedTicketType === 'vip' ? 'VIP-' + Math.floor(1 + Math.random() * 20) : 'PR-' + Math.floor(1 + Math.random() * 50);
+            document.getElementById('ticketOrderId').textContent = orderId;
+            document.getElementById('ticketSeat').textContent = seatNum;
+            document.getElementById('ticketType').textContent = selectedTicketType === 'vip' ? 'VIP' : 'Premium';
+            setTimeout(() => alert('Payment successful! Your ticket has been generated.'), 500);
+        }
+        function downloadTicket() { alert('Ticket downloaded successfully!'); }
+        function shareTicket() { alert('Ticket shared successfully!'); }
+        function resetBooking() {
+            document.getElementById('ticketSection').classList.add('hidden');
+            document.getElementById('events').classList.remove('hidden');
+            selectedTimeSlot = null;
+            selectedTicketType = null;
+        }
+
+        // Service Pages
+        function showServicePage(service) {
+            document.getElementById('services').classList.add('hidden');
+            document.getElementById(service + '-service').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function hideServicePage() {
+            document.querySelectorAll('.service-page').forEach(page => page.classList.remove('active'));
+            document.getElementById('services').classList.remove('hidden');
+        }
+        function filterServices(filter, element) {
+            document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Contact Form
+        function submitContactForm() {
+            document.getElementById('contactForm').classList.add('hidden');
+            document.getElementById('thankYouMessage').classList.remove('hidden');
+        }
+
+        // Login / User
+        let currentUser = null;
+        function toggleLoginModal() {
+            document.getElementById('loginModal').style.display = document.getElementById('loginModal').style.display === 'flex' ? 'none' : 'flex';
+        }
+        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            if (!email) return alert('Enter email');
+            currentUser = { email, name: email.split('@')[0] };
+            closeLoginModal();
+            alert('Logged in as ' + currentUser.name);
+        }
+        function logout() {
+            currentUser = null;
+            document.getElementById('userDropdown').classList.remove('active');
+        }
+        function showUserDashboard() { alert('User Dashboard - No bookings yet.'); }
+
+        // Chatbot
+        function toggleChatbot() { document.getElementById('chatbotWindow').classList.toggle('active'); }
+        function sendChatbotMessage() {
+            const input = document.getElementById('chatbotInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const messages = document.getElementById('chatbotMessages');
+            messages.innerHTML += `<div class="message user-message bg-rose-500 text-white p-2 rounded-lg mb-2 max-w-[80%] ml-auto">${msg}</div>`;
+            input.value = '';
+            setTimeout(() => {
+                messages.innerHTML += `<div class="message bot-message bg-slate-200 p-2 rounded-lg mb-2 max-w-[80%]">Thank you for your message. Our team will respond shortly.</div>`;
+            }, 1000);
+        }
+
+        // Feedback Modal
+        let currentRating = 0;
+        function openFeedbackModal() { document.getElementById('feedbackModal').classList.add('active'); }
+        function closeFeedbackModal() { document.getElementById('feedbackModal').classList.remove('active'); }
+        function rateStar(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('#starRating .star');
+            stars.forEach((star, index) => {
+                if (index < rating) star.classList.add('active');
+                else star.classList.remove('active');
+            });
+        }
+        function submitFeedback(event) {
+            event.preventDefault();
+            alert('Thank you for your feedback!');
+            closeFeedbackModal();
+        }
+
+        // Initialize
+        window.onload = function () {
+            renderTestimonials();
+            renderBrands();
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,218 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-matte-black: #0a0a0a;
+  --color-charcoal: #1a1a1a;
+  --color-off-white: #fafafa;
+  --color-warm-white: #fdfbf7;
+  --color-pearl-white: #fdfdfd;
+  --color-champagne-gold: #d4af37;
+  --color-soft-gold: #e8d08d;
+  --color-soft-beige: #f5f0e6;
+  --color-soft-gray: #8e8e8e;
+  --color-royal-purple: #4a0e4e;
+  --color-deep-indigo: #1a1a2e;
+  --color-deep-emerald: #043927;
+  
+  --color-primary-50: #fcfaf5;
+  --color-primary-100: #f5f0e6;
+  --color-primary-200: #e8d08d;
+  --color-primary-300: #d4af37;
+  --color-primary-400: #b8962e;
+  --color-primary-500: #0a0a0a;
+  --color-primary-600: #1a1a1a;
+  --color-primary-700: #2d2d2d;
+  --color-primary-800: #404040;
+  --color-primary-900: #525252;
+  
+  --color-gold-50: #fcfaf5;
+  --color-gold-100: #f8f4e6;
+  --color-gold-200: #f3e8c9;
+  --color-gold-300: #ead6a1;
+  --color-gold-400: #dfc176;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b8962e;
+  --color-gold-700: #937622;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-warm-white);
+  }
+
+  body {
+    @apply bg-warm-white text-matte-black antialiased overflow-x-hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+
+  /* Custom scrollbar for a premium feel */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-champagne-gold;
+  }
+
+  @media (max-width: 640px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-gradient-to-r from-matte-black via-charcoal to-matte-black bg-clip-text text-transparent;
+  }
+  
+  .gradient-text-gold {
+    @apply bg-gradient-to-r from-champagne-gold via-soft-gold to-champagne-gold bg-clip-text text-transparent;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-br from-matte-black via-charcoal to-deep-indigo;
+  }
+
+  .gold-gradient {
+    @apply bg-gradient-to-r from-champagne-gold via-soft-gold to-champagne-gold;
+  }
+
+  /* Luxury Glassmorphism Utilities */
+  .glass {
+    @apply bg-white/40 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.04)];
+  }
+  
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)];
+  }
+
+  .glass-panel {
+    @apply bg-white/60 backdrop-blur-2xl border border-white/50 shadow-[0_16px_40px_0_rgba(0,0,0,0.06)];
+  }
+
+  /* Cinematic depth and layers */
+  .cinematic-shadow {
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .cinematic-glow {
+    box-shadow: 0 0 40px -10px rgba(212, 175, 55, 0.3);
+  }
+
+  /* Noise Overlay */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  /* Text balance for elegant typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* ── Marquee / Infinite Scroll animation ─────────────────────────────────── */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-scroll-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-track-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll-right 28s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-right:hover {
+  animation-play-state: paused;
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  /* Fade edges for a premium look */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+/* ── Vertical Marquee for Testimonials ───────────────────────────────────── */
+@keyframes marquee-vertical {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.marquee-vertical-track {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  animation: marquee-vertical 45s linear infinite;
+  will-change: transform;
+}
+
+.marquee-vertical-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-vertical-wrapper {
+  overflow: hidden;
+  position: relative;
+  /* Fade top and bottom edges for luxury appearance */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
