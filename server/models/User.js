@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpire: Date,
     wishlist: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vendor',
+        itemId: { type: mongoose.Schema.Types.ObjectId, required: true, refPath: 'wishlist.itemType' },
+        itemType: { type: String, enum: ['Vendor', 'Package'], required: true },
       },
     ],
     savedEvents: [

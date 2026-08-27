@@ -28,7 +28,6 @@ const vendorSchema = new mongoose.Schema(
         'Decoration',
         'Catering',
         'Photography',
-        'Videography',
         'DJ & Music',
         'Makeup Artists',
         'Venues',
@@ -37,6 +36,78 @@ const vendorSchema = new mongoose.Schema(
         'Invitations',
       ],
     },
+    specialty: {
+      type: String,
+      default: '',
+    },
+    shortDescription: {
+      type: String,
+      default: '',
+    },
+    isNew: {
+      type: Boolean,
+      default: false,
+    },
+    isVerified: {
+      type: Boolean,
+      default: true,
+    },
+    quickStats: {
+      yearsExperience: { type: Number, default: 5 },
+      eventsCompleted: { type: Number, default: 120 },
+      venuesServed: { type: Number, default: 25 },
+      citiesCovered: { type: Number, default: 8 },
+      photosDelivered: { type: String, default: '250K+' },
+      awardsCount: { type: Number, default: 8 },
+      menusCount: { type: Number, default: 50 },
+    },
+    verification: {
+      businessVerified: { type: Boolean, default: true },
+      portfolioReviewed: { type: Boolean, default: true },
+      contactVerified: { type: Boolean, default: true },
+      informationVerified: { type: Boolean, default: true },
+      reviewsReviewed: { type: Boolean, default: true },
+      policiesAccepted: { type: Boolean, default: true },
+    },
+    packages: [
+      {
+        id: String,
+        name: String,
+        price: Number,
+        priceLabel: String,
+        isPopular: Boolean,
+        description: String,
+        features: [String],
+        inclusions: [String],
+      },
+    ],
+    featuredEvents: [
+      {
+        title: String,
+        clientNames: String,
+        location: String,
+        guestCount: Number,
+        eventType: String,
+        image: String,
+        description: String,
+      },
+    ],
+    portfolio: [
+      {
+        title: String,
+        category: String,
+        url: String,
+      },
+    ],
+    whyChooseUs: [String],
+    videoUrl: String,
+    faqs: [
+      {
+        question: String,
+        answer: String,
+      },
+    ],
+    policies: [String],
     services: [
       {
         name: { type: String, required: true },

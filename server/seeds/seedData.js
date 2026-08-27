@@ -204,11 +204,12 @@ const seed = async () => {
         completedEvents: 280, yearsOfExperience: 7, availability: true,
       },
 
-      // ─── VIDEOGRAPHY ──────────────────────────────────────────────────────
+      // ─── PHOTOGRAPHY & CINEMATOGRAPHY CONTINUED ──────────────────────────
       {
         businessName: 'FrameForge Cinematic',
-        description: 'Cinematic wedding films that look and feel like feature movies. Our narrative-driven filmmaking approach creates films your family will watch for generations.',
-        category: 'Videography',
+        description: 'Cinematic wedding films and photography that look and feel like feature movies. Our narrative-driven filmmaking approach creates films your family will watch for generations.',
+        category: 'Photography',
+        specialty: 'Wedding Photography & Cinematography',
         services: [
           { name: 'Wedding Highlight Film (4K)', description: '5–8 min cinematic highlight reel', price: 75000, unit: 'per event' },
           { name: 'Full Ceremony Film', description: 'Complete ceremony + reception recording', price: 50000, unit: 'per event' },
@@ -225,8 +226,9 @@ const seed = async () => {
       },
       {
         businessName: 'Reelhouse Films',
-        description: 'Boutique videography studio with a passion for storytelling. From intimate elopements to grand destination weddings, we capture the essence of every celebration.',
-        category: 'Videography',
+        description: 'Boutique photography & videography studio with a passion for storytelling. From intimate elopements to grand destination weddings, we capture the essence of every celebration.',
+        category: 'Photography',
+        specialty: 'Wedding Photography & Cinematography',
         services: [
           { name: 'Classic Wedding Film', description: 'Same-day edit + 4K full day coverage', price: 60000, unit: 'per event' },
           { name: 'Short Film Package', description: 'Artistic 3-min short film for social media', price: 35000, unit: 'per event' },

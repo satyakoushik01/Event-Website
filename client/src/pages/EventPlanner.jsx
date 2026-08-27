@@ -117,7 +117,7 @@ export default function EventPlanner() {
   };
 
   return (
-    <div className="bg-warm-white min-h-screen pb-32">
+    <div className="bg-warm-white min-h-screen pb-8">
       {/* Header */}
       <section className="pt-40 pb-20 px-6 lg:px-8 border-b border-gray-100 text-center">
         <motion.div
@@ -131,10 +131,10 @@ export default function EventPlanner() {
         </motion.div>
       </section>
 
-      <section className="py-16">
+      <section className="py-8">
         <div className="max-w-3xl mx-auto px-6">
           {/* Progress stepper */}
-          <div className="flex items-center justify-between mb-12">
+          <div className="flex items-center justify-between mb-4">
             {STEPS.map((s, i) => (
               <div key={s} className="flex items-center flex-1">
                 <div className="flex flex-col items-center shrink-0">
@@ -297,7 +297,7 @@ export default function EventPlanner() {
             </AnimatePresence>
 
             {/* Navigation */}
-            <div className="flex justify-between mt-12 pt-8 border-t border-gray-100">
+            <div className="flex justify-between mt-6 pt-8 border-t border-gray-100">
               <Button variant="ghost" onClick={back} disabled={step === 0}>← Back</Button>
               {step < STEPS.length - 1 ? (
                 <Button onClick={next} disabled={!canNext()}>Continue →</Button>

@@ -35,7 +35,7 @@ export default function Layout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className="min-h-screen flex flex-col relative bg-matte-black">
       <CinematicBackground />
       <Navbar />
       <AnimatePresence mode="wait">

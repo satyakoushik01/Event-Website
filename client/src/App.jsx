@@ -48,6 +48,15 @@ export default function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="services" element={<Services />} />
         <Route path="vendors" element={<Vendors />} />
+        <Route path="vendors/decoration" element={<Vendors defaultCategory="Decoration" />} />
+        <Route path="vendors/catering" element={<Vendors defaultCategory="Catering" />} />
+        <Route path="vendors/photography" element={<Vendors defaultCategory="Photography" />} />
+        <Route path="vendors/dj-music" element={<Vendors defaultCategory="DJ & Music" />} />
+        <Route path="vendors/makeup-artists" element={<Vendors defaultCategory="Makeup Artists" />} />
+        <Route path="vendors/venues" element={<Vendors defaultCategory="Venues" />} />
+        <Route path="vendors/entertainment" element={<Vendors defaultCategory="Entertainment" />} />
+        <Route path="vendors/transportation" element={<Vendors defaultCategory="Transportation" />} />
+        <Route path="vendors/invitations" element={<Vendors defaultCategory="Invitations" />} />
         <Route path="vendors/:id" element={<VendorDetails />} />
         <Route path="events" element={<Events />} />
         <Route path="events/:id" element={<EventDetails />} />

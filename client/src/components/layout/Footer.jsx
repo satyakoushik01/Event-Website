@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export default function Footer() {
   return (
-    <footer className="bg-matte-black text-white pt-24 pb-12 relative overflow-hidden">
+    <footer className="bg-matte-black text-white pt-12 pb-6 relative overflow-hidden">
       {/* Subtle luxury glow in the background */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[1px] bg-gradient-to-r from-transparent via-champagne-gold/30 to-transparent" />
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-champagne-gold/5 blur-[120px] rounded-full pointer-events-none" />

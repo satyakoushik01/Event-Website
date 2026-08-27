@@ -1,0 +1,15 @@
+# Node Modules
+node_modules/
+**/node_modules/
+
+# Secrets & Configs
+.env
+*.env
+.env.*
+
+# Build Outputs
+dist/
+**/dist/
+
+# Logs
+*.log

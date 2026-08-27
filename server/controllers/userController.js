@@ -45,15 +45,19 @@ const toggleWishlist = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     const vendorId = req.params.vendorId;
-    const index = user.wishlist.indexOf(vendorId);
-
-    if (index > -1) {
-      user.wishlist.splice(index, 1);
+    // Find if vendor already in wishlist
+    const existingIndex = user.wishlist.findIndex(item =>
+      item.itemId && item.itemId.toString() === vendorId && item.itemType === 'Vendor'
+    );
+    if (existingIndex > -1) {
+      // Remove
+      user.wishlist.splice(existingIndex, 1);
     } else {
-      user.wishlist.push(vendorId);
+      // Add new entry
+      user.wishlist.push({ itemId: vendorId, itemType: 'Vendor' });
     }
-
     await user.save();
+    await user.populate('wishlist.itemId');
     res.status(200).json({ success: true, wishlist: user.wishlist });
   } catch (error) {
     next(error);
@@ -64,11 +68,12 @@ const toggleWishlist = async (req, res, next) => {
 // @route   GET /api/users/wishlist
 const getWishlist = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).populate({
-      path: 'wishlist',
-      match: { status: 'approved' },
-    });
-    res.status(200).json({ success: true, wishlist: user.wishlist });
+    const user = await User.findById(req.user.id).populate('wishlist.itemId');
+    const wishlist = user.wishlist.map(item => ({
+      itemId: item.itemId,
+      itemType: item.itemType,
+    }));
+    res.status(200).json({ success: true, wishlist });
   } catch (error) {
     next(error);
   }
