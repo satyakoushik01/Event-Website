@@ -18,14 +18,14 @@ const BENTO_IMAGES = [
 
 // ─── Partners ─────────────────────────────────────────────────────────────────
 const PARTNERS = [
-  { name: 'Maruti Suzuki', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Maruti_Suzuki_logo.svg' },
-  { name: 'Coca-Cola', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg' },
-  { name: 'Shreyas Media', logo: 'https://yt3.googleusercontent.com/ytc/AIdro_k6PvxT-tH9X67J6x9q2XG7yFm16y06z8-t5352lQ=s900-c-k-c0x00ffffff-no-rj' },
-  { name: 'Zee Telugu', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Zee_Telugu_2025.svg' },
-  { name: 'SRM University AP', logo: 'https://srmap.edu.in/wp-content/uploads/2019/08/SRM-AP-logo.png' },
-  { name: 'BookMyShow', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/BookMyShow_Logo.svg' },
-  { name: 'Red Bull', logo: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Red_Bull_logo.svg' },
-  { name: 'Taj Hotels', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/07/Taj_Hotels_logo.svg' },
+  { name: 'Penguin Logistics', logo: '/penguin_logestics.png' },
+  { name: 'Giftsby Ganesh', logo: '/Giftsby_ganesh.png' },
+  { name: 'Avinash Arts', logo: '/Avinash_arts.png' },
+  { name: 'Koushik Designs', logo: '/koushik_design.png' },
+  { name: 'SRM University AP', logo: '/srm.png' },
+  { name: 'Sahithi studio', logo: '/sahiti_studio.png' },
+  { name: 'Nithin Marketing', logo: '/Nithin_marketing.png' },
+  { name: 'Tejas kitchen', logo: '/Tejas_kitchen.png' },
 ];
 
 // ─── Client Stories data ──────────────────────────────────────────────────────
@@ -432,14 +432,14 @@ export default function Home() {
                 <img
                   src={partner.logo}
                   alt={partner.name}
-                  className="max-w-[85%] max-h-[70%] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                  className="max-w-[200%] max-h-[200%] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
               </div>
             ))}
           </div>
         </div>
-        <p className="text-center text-xs text-gray-300 font-light mt-6 tracking-widest uppercase">
+        <p className="text-center text-xs text-gray-800 font-light mt-6 tracking-widest uppercase">
           MORE PARTNERSHIPS COMING SOON
         </p>
       </section>

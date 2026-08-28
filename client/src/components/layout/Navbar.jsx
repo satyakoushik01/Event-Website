@@ -34,7 +34,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto glass-panel rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-white/60">
         <Link to="/" className="flex items-center group">
           <motion.img 
-            src="/logo.png" 
+            src="/moments-hub-logo.png"
             alt="Moments Group" 
             className="h-10 sm:h-14 w-auto object-contain"
             whileHover={{ scale: 1.05 }}

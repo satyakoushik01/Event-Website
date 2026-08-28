@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
 
           <div className="md:col-span-2">
-            <h4 className="font-display text-sm tracking-widest text-champagne-gold mb-6 uppercase">Maison</h4>
+            <h4 className="font-display text-sm tracking-widest text-champagne-gold mb-6 uppercase">HUB</h4>
             <ul className="space-y-4 text-sm text-white/60 font-light">
               <li>
                 <Link to="/about" className="hover:text-white transition-colors duration-300">Our Story</Link>
@@ -56,13 +56,13 @@ export default function Footer() {
             <h4 className="font-display text-sm tracking-widest text-champagne-gold mb-6 uppercase">Connect</h4>
             <ul className="space-y-4 text-sm text-white/60 font-light">
               <li>
-                <a href="mailto:concierge@momentsevents.com" className="hover:text-white transition-colors duration-300">concierge@moments.com</a>
+                <a href="mailto:momentshubinfo@gmail.com" className="hover:text-white transition-colors duration-300">momentshubinfo@gmail.com</a>
               </li>
               <li>
-                <a href="tel:+919876543210" className="hover:text-white transition-colors duration-300">+91 98765 43210</a>
+                <a href="tel:+91 8977557685" className="hover:text-white transition-colors duration-300">+91 8977557685</a>
               </li>
-              <li className="text-white/40 pt-2">
-                Mumbai, India
+              <li className="text-white/55 pt-2">
+                Benz circle, Vijayawada, India
               </li>
             </ul>
           </div>
