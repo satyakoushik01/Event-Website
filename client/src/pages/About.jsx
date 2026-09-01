@@ -201,76 +201,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Client Stories (About Page) */}
-      <section className="py-24 bg-warm-white">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <span className="text-xs uppercase tracking-[0.3em] font-semibold text-champagne-gold mb-3 block">Voices</span>
-            <h2 className="font-display text-4xl md:text-5xl text-matte-black tracking-tight mb-3">Client Stories</h2>
-            <p className="text-gray-500 font-light text-sm tracking-wide">Reflecting on moments made timeless</p>
-          </motion.div>
 
-          {/* Testimonial Vertical Marquee window (exactly 3 cards visible) */}
-          <div className="marquee-vertical-wrapper h-[588px] relative px-2">
-            <div className="marquee-vertical-track gap-6">
-              {[...testimonials, ...testimonials].map((t, i) => {
-                const isEven = i % 2 === 0;
-                return (
-                  <div
-                    key={i}
-                    className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-6 bg-white rounded-[24px] p-5 border border-gray-100 cinematic-shadow h-[380px] md:h-[180px] w-full shrink-0 transition-all duration-500 hover:scale-[1.01]`}
-                  >
-                    {/* Square client photo */}
-                    <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl overflow-hidden shrink-0 shadow-sm relative group">
-                      <img
-                        src={t.photo}
-                        alt={t.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-matte-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-grow flex flex-col justify-between h-full py-1 text-center md:text-left">
-                      <div>
-                        <div className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} md:items-baseline md:justify-between gap-1 mb-1.5`}>
-                          <h4 className="font-display text-lg text-matte-black font-semibold tracking-tight">{t.name}</h4>
-                          <span className="text-[10px] uppercase tracking-widest text-champagne-gold font-medium">{t.location}</span>
-                        </div>
-                        <p className="text-gray-500 text-xs md:text-sm font-light leading-relaxed line-clamp-2 px-2 md:px-0">
-                          &ldquo;{t.story}&rdquo;
-                        </p>
-                      </div>
-
-                      <div className={`mt-2 flex justify-center ${isEven ? 'md:justify-start' : 'md:justify-end'}`}>
-                        <a
-                          href={t.youtubeUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-2 text-matte-black hover:text-champagne-gold transition-colors duration-300 text-[11px] font-semibold uppercase tracking-wider group/btn"
-                        >
-                          <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center group-hover/btn:bg-champagne-gold group-hover/btn:border-champagne-gold transition-all duration-300">
-                            <svg className="w-2.5 h-2.5 fill-current ml-0.5" viewBox="0 0 24 24">
-                              <path d="M8 5v14l11-7z" />
-                            </svg>
-                          </span>
-                          Watch Story
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Founder */}
       <section className="py-32">
@@ -290,7 +221,7 @@ export default function About() {
               <div className="w-12 h-[1px] bg-champagne-gold mb-8" />
               <h3 className="font-display text-2xl text-matte-black mb-4">Satya Koushik Devarabhotla</h3>
               <p className="text-gray-500 leading-relaxed mb-6 font-light text-lg">
-                For over a decade, Satya Koushik has been at the forefront of luxury event curation. His passion for extraordinary detail and flawless execution led to the creation of Moments Group.
+                A passionate young entrepreneur, "The MomentsHub" brings a fresh, modern approach to the event management industry. By combining creative vision with smart digital innovations, We make event planning effortless and seamless for clients. Built on dedication and a love for celebration, "The MomentsHub" is focused on turning special occasions into unforgettable, timeless memories.
               </p>
               <p className="text-gray-500 leading-relaxed mb-12 font-light text-lg">
                 "Our mission isn't just to plan events. We create an ecosystem where world-class artisans and visionary clients can collaborate to craft moments that transcend time."

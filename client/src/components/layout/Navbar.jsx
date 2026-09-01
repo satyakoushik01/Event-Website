@@ -8,7 +8,7 @@ const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
   { to: '/vendors', label: 'Vendors' },
-  { to: '/events', label: 'Events' },
+  { to: '#client-stories', label: 'Client Stories' },
   { to: '/planner', label: 'Planner' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
@@ -17,8 +17,14 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { user, logout, isAdmin } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (location.hash === '#client-stories') {
+      const el = document.getElementById('client-stories');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   const handleLogout = () => {
     logout();
@@ -81,8 +87,8 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/login"><Button variant="ghost" size="sm">Log In</Button></Link>
-              <Link to="/register"><Button size="sm">Begin Journey</Button></Link>
+              <Link to="/login"><Button size="sm">Login as Client</Button></Link>
+              <Link to="/register"><Button size="sm">Login as Partner</Button></Link>
             </>
           )}
         </div>

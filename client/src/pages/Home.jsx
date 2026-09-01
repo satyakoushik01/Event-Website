@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { getFeaturedVendors } from '../api/vendors';
 import { getFeaturedEvents } from '../api/events';
+import ClientStoriesCarousel from '../components/ClientStoriesCarousel';
 import Button from '../components/ui/Button';
 import { MOCK_VENDORS } from '../data/mockVendors';
 
@@ -22,7 +23,7 @@ const PARTNERS = [
   { name: 'Giftsby Ganesh', logo: '/Giftsby_ganesh.png' },
   { name: 'Avinash Arts', logo: '/Avinash_arts.png' },
   { name: 'Koushik Designs', logo: '/koushik_design.png' },
-  { name: 'SRM University AP', logo: '/srm.png' },
+  { name: 'Vinay venues', logo: '/vinay_venues.png' },
   { name: 'Sahithi studio', logo: '/sahiti_studio.png' },
   { name: 'Nithin Marketing', logo: '/Nithin_marketing.png' },
   { name: 'Tejas kitchen', logo: '/Tejas_kitchen.png' },
@@ -408,7 +409,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Partners & Collaborations ── */}
+      <ClientStoriesCarousel stories={CLIENT_STORIES} />
+{/* ── Partners & Collaborations ── */}
       <section className="py-20 relative z-20 bg-warm-white -mt-10 rounded-t-[40px] border-t border-white/50 shadow-[0_-20px_40px_rgba(0,0,0,0.05)]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -582,7 +584,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Client Stories / Voices ── */}
+      {}
       <section className="py-32 bg-[#fafaf8]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <SectionHeader
