@@ -129,11 +129,11 @@
 /* ── Marquee / Infinite Scroll animation ─────────────────────────────────── */
 @keyframes marquee-scroll {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-33.333%); }
 }
 
 @keyframes marquee-scroll-right {
-  0%   { transform: translateX(-50%); }
+  0%   { transform: translateX(-33.333%); }
   100% { transform: translateX(0); }
 }
 
@@ -151,7 +151,7 @@
 .marquee-track-right {
   display: flex;
   width: max-content;
-  animation: marquee-scroll-right 28s linear infinite;
+  animation: marquee-scroll-right 30s linear infinite;
   will-change: transform;
 }
 

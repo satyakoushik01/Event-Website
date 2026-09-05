@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { getFeaturedVendors } from '../api/vendors';
 import { getFeaturedEvents } from '../api/events';
-import ClientStoriesCarousel from '../components/ClientStoriesCarousel';
+
 import Button from '../components/ui/Button';
 import { MOCK_VENDORS } from '../data/mockVendors';
 
@@ -204,8 +204,8 @@ const SectionHeader = ({ label, title, subtitle, light = false }) => (
 function ClientStoryCard({ story, isHovered, onHover, onLeave }) {
   return (
     <motion.div
-      className="flex-shrink-0 w-[calc(25%-18px)] min-w-[220px] rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
-      whileHover={{ y: -6 }}
+      className="flex-shrink-0 w-[calc(3%-20px)] min-w-[220px] rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+      whileHover={{ y: -10 }}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
@@ -342,9 +342,13 @@ export default function Home() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
   const autoSlideRef = useRef(null);
+  // Modal state for client stories
+  const [showModal, setShowModal] = useState(false);
+  const [selectedStory, setSelectedStory] = useState(null);
 
-  // Experience tab state
-  const [activeTab, setActiveTab] = useState('Weddings');
+    // Curated experiences tab state
+  const [activeTab, setActiveTab] = useState(EXPERIENCE_TABS[0]);
+  const marqueeStories = [...CLIENT_STORIES, ...CLIENT_STORIES, ...CLIENT_STORIES];
 
   // Featured artisans from mock data (always available, 3 featured ones)
   const featuredArtisans = MOCK_VENDORS.filter((v) => v.featured).slice(0, 3);
@@ -375,8 +379,10 @@ export default function Home() {
       {/* ── Hero ── */}
       <section ref={heroRef} className="relative h-screen min-h-[800px] overflow-hidden bg-matte-black">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
-          <img src={HERO_IMAGE} alt="Luxury Event" className="w-full h-full object-cover opacity-60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-matte-black via-matte-black/50 to-transparent" />
+          <video autoPlay loop muted playsInline poster={HERO_IMAGE} className="absolute inset-0 w-full h-full object-cover -z-10">
+  <source src="/videos/Background.mp4" type="video/mp4" />
+</video>
+          <div className="absolute inset-0 bg-gradient-to-t from-matte-black via-matte-black/50 to-transparent pointer-events-none" />
         </motion.div>
 
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center mt-16">
@@ -409,7 +415,43 @@ export default function Home() {
         </div>
       </section>
 
-      <ClientStoriesCarousel stories={CLIENT_STORIES} />
+<section className="py-32 bg-[#fafaf8]">
+  {/* Client Stories Marquee */}
+  <SectionHeader label="STORIES" title="Client Stories" light={false} />
+  <div className="marquee-wrapper py-6">
+    <div className="marquee-track-right" style={{ animation: 'marquee-scroll-right 30s linear infinite' }}>
+      {marqueeStories.map((story, idx) => (
+        <ClientStoryCard
+          key={idx}
+          story={story}
+          onClick={() => {
+            setSelectedStory(story);
+            setShowModal(true);
+          }}
+        />
+      ))}
+    </div>
+  </div>
+
+  {/* Modal for story video/details */}
+  {showModal && selectedStory && (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg max-w-lg w-full p-6 relative">
+        <button
+          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+          onClick={() => setShowModal(false)}
+        >
+          ✕
+        </button>
+        {/* Assuming story.image is a video thumbnail; display larger image */}
+        <img src={selectedStory.image} alt={selectedStory.coupleNames} className="w-full h-auto mb-4 rounded" />
+        <h3 className="text-xl font-semibold mb-2">{selectedStory.coupleNames}</h3>
+        <p className="text-gray-700 mb-2">{selectedStory.storyTitle}</p>
+        <p className="text-gray-600">{selectedStory.testimonial}</p>
+      </div>
+    </div>
+  )}
+</section>
 {/* ── Partners & Collaborations ── */}
       <section className="py-20 relative z-20 bg-warm-white -mt-10 rounded-t-[40px] border-t border-white/50 shadow-[0_-20px_40px_rgba(0,0,0,0.05)]">
         <motion.div
@@ -447,7 +489,7 @@ export default function Home() {
       </section>
 
       {/* ── The Collection (Bento Grid) ── */}
-      <section className="py-32">
+      <section className="py-10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <SectionHeader title="The Collection" subtitle="Bespoke services for extraordinary celebrations" />
 
@@ -579,91 +621,6 @@ export default function Home() {
               <Button variant="ghost" size="lg" className="border-b border-matte-black rounded-none px-0 py-1 hover:bg-transparent hover:border-champagne-gold hover:text-champagne-gold">
                 View The Portfolio
               </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {}
-      <section className="py-32 bg-[#fafaf8]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <SectionHeader
-            label="VOICES"
-            title="Client Stories"
-            subtitle="Reflecting on moments made timeless"
-          />
-
-          {/* Carousel Container */}
-          <div className="relative">
-            {/* Left Arrow */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-20 w-10 h-10 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center hover:bg-matte-black hover:text-white hover:border-matte-black transition-all duration-300 group"
-              aria-label="Previous"
-            >
-              <svg className="w-4 h-4 text-gray-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            {/* Cards Track */}
-            <div
-              ref={carouselRef}
-              className="overflow-hidden"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => { setIsPaused(false); setHoveredCard(null); }}
-            >
-              <motion.div
-                className="flex gap-6"
-                animate={{ x: `calc(-${carouselIndex * (100 / visibleCards)}% - ${carouselIndex * 6}px)` }}
-                transition={{ type: 'spring', stiffness: 280, damping: 32 }}
-              >
-                {CLIENT_STORIES.map((story) => (
-                  <ClientStoryCard
-                    key={story.id}
-                    story={story}
-                    isHovered={hoveredCard === story.id}
-                    onHover={() => setHoveredCard(story.id)}
-                    onLeave={() => setHoveredCard(null)}
-                  />
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Right Arrow */}
-            <button
-              onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-20 w-10 h-10 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center hover:bg-matte-black hover:text-white hover:border-matte-black transition-all duration-300 group"
-              aria-label="Next"
-            >
-              <svg className="w-4 h-4 text-gray-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Dot indicators */}
-          <div className="flex items-center justify-center gap-2 mt-8">
-            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCarouselIndex(i)}
-                className={`rounded-full transition-all duration-300 ${
-                  i === carouselIndex
-                    ? 'w-6 h-2 bg-matte-black'
-                    : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* View All */}
-          <div className="text-center mt-10">
-            <Link to="/events">
-              <button className="px-8 py-3 rounded-full bg-matte-black text-white text-sm font-medium tracking-wide hover:bg-charcoal transition-colors duration-300 shadow-sm">
-                View All
-              </button>
             </Link>
           </div>
         </div>

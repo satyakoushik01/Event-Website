@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
+import React from "react";
 
-export default function ClientStoryCard({ story, isHovered = false }) {
+export default function ClientStoryCard({ story, isHovered = false, onClick }) {
   if (!story) return null;
 
   return (

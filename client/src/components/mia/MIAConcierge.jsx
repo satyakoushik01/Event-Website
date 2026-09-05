@@ -29,7 +29,7 @@ function MIAButton({ onClick, isOpen }) {
             transition={{ duration: 0.25 }}
             role="tooltip"
           >
-            Meet MIA
+            Chat
           </motion.span>
         )}
       </AnimatePresence>

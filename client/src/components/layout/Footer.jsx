@@ -73,9 +73,10 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Moments Group. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-white/40 hover:text-champagne-gold transition-colors text-xs tracking-wider uppercase">Instagram</a>
-            <a href="#" className="text-white/40 hover:text-champagne-gold transition-colors text-xs tracking-wider uppercase">Pinterest</a>
-            <a href="#" className="text-white/40 hover:text-champagne-gold transition-colors text-xs tracking-wider uppercase">LinkedIn</a>
+            <a href="https://www.youtube.com/@Momentshub_official" className="text-white/40 hover:text-champagne-gold transition-colors text-xs tracking-wider uppercase">YouTube</a>
+            <a href="https://www.instagram.com/momentshub_official?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" className="text-white/40 hover:text-champagne-gold transition-colors text-xs tracking-wider uppercase">Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=61585057981799" className="text-white/40 hover:text-champagne-gold transition-colors text-xs tracking-wider uppercase">Facebook</a>
+            <a href="https://www.linkedin.com/in/moments-hub-8013843b5/" className="text-white/40 hover:text-champagne-gold transition-colors text-xs tracking-wider uppercase">LinkedIn</a>
           </div>
         </div>
       </div>
