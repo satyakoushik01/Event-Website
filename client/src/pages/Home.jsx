@@ -375,7 +375,7 @@ export default function Home() {
   }, [isPaused, nextSlide]);
 
   return (
-    <div className="bg-warm-white">
+    <div className="bg-warm-white text-gray-900 dark:bg-matte-black dark:text-white transition-colors duration-300">
       {/* ── Hero ── */}
       <section ref={heroRef} className="relative h-screen min-h-[800px] overflow-hidden bg-matte-black">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
@@ -415,7 +415,7 @@ export default function Home() {
         </div>
       </section>
 
-<section className="py-32 bg-[#fafaf8]">
+<section className="py-32 bg-[#fafaf8] dark:bg-charcoal transition-colors duration-300">
   {/* Client Stories Marquee */}
   <SectionHeader label="STORIES" title="Client Stories" light={false} />
   <div className="marquee-wrapper py-6">
@@ -436,9 +436,9 @@ export default function Home() {
   {/* Modal for story video/details */}
   {showModal && selectedStory && (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg max-w-lg w-full p-6 relative">
+      <div className="bg-white dark:bg-charcoal rounded-lg max-w-lg w-full p-6 relative text-matte-black dark:text-white">
         <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+          className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-800"
           onClick={() => setShowModal(false)}
         >
           ✕
@@ -446,14 +446,14 @@ export default function Home() {
         {/* Assuming story.image is a video thumbnail; display larger image */}
         <img src={selectedStory.image} alt={selectedStory.coupleNames} className="w-full h-auto mb-4 rounded" />
         <h3 className="text-xl font-semibold mb-2">{selectedStory.coupleNames}</h3>
-        <p className="text-gray-700 mb-2">{selectedStory.storyTitle}</p>
-        <p className="text-gray-600">{selectedStory.testimonial}</p>
+        <p className="text-gray-700 dark:text-gray-300 mb-2">{selectedStory.storyTitle}</p>
+        <p className="text-gray-600 dark:text-gray-400">{selectedStory.testimonial}</p>
       </div>
     </div>
   )}
 </section>
 {/* ── Partners & Collaborations ── */}
-      <section className="py-20 relative z-20 bg-warm-white -mt-10 rounded-t-[40px] border-t border-white/50 shadow-[0_-20px_40px_rgba(0,0,0,0.05)]">
+      <section className="py-20 relative z-20 bg-warm-white dark:bg-matte-black transition-colors duration-300 -mt-10 rounded-t-[40px] border-t border-white/50 shadow-[0_-20px_40px_rgba(0,0,0,0.05)]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

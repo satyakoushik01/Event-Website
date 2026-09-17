@@ -85,9 +85,9 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 // Generate JWT
 userSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
+  const secret = process.env.JWT_SECRET || 'default_jwt_secret';
+  const expires = process.env.JWT_EXPIRE || '1d';
+  return jwt.sign({ id: this._id, role: this.role }, secret, { expiresIn: expires });
 };
 
 // Generate email verification token

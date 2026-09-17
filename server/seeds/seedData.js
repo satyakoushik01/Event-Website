@@ -19,9 +19,11 @@ const createMany = async (Model, docs) => {
   return created;
 };
 
-const seed = async () => {
+const seed = async (shouldExit = (require.main === module)) => {
   try {
-    await connectDB();
+    if (mongoose.connection.readyState !== 1) {
+      await connectDB();
+    }
 
     console.log('Clearing existing data...');
     await Promise.all([
@@ -546,7 +548,10 @@ const seed = async () => {
       },
     ]);
 
-    user.wishlist = [vendors[0]._id, vendors[2]._id];
+    user.wishlist = [
+      { itemId: vendors[0]._id, itemType: 'Vendor' },
+      { itemId: vendors[2]._id, itemType: 'Vendor' },
+    ];
     user.savedEvents = [events[0]._id];
     await user.save();
 
@@ -625,11 +630,19 @@ const seed = async () => {
     console.log('  User:  priya@example.com / user123');
     console.log(`\n  ${vendors.length} vendors, ${events.length} events, ${bookings.length} bookings\n`);
 
-    process.exit(0);
+    if (shouldExit) {
+      process.exit(0);
+    }
   } catch (error) {
     console.error('Seed error:', error);
-    process.exit(1);
+    if (shouldExit) {
+      process.exit(1);
+    }
   }
 };
 
-seed();
+module.exports = seed;
+
+if (require.main === module) {
+  seed(true);
+}

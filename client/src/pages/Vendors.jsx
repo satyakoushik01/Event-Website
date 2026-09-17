@@ -115,7 +115,7 @@ export default function Vendors({ defaultCategory }) {
   const activeFiltersCount = [locationCity, minRating, minPrice, maxPrice].filter(Boolean).length;
 
   return (
-    <div className="bg-warm-white min-h-screen pb-32">
+    <div className="bg-warm-white text-gray-900 dark:bg-matte-black dark:text-white transition-colors duration-300 min-h-screen pb-32">
       {/* HERO SECTION */}
       <section className="pt-36 md:pt-44 pb-16 px-6 lg:px-8 border-b border-gray-200/60 bg-gradient-to-b from-warm-white to-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-8">

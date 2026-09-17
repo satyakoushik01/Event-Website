@@ -19,7 +19,7 @@ const serviceDetails = {
 
 export default function Services() {
   return (
-    <div className="bg-warm-white">
+    <div className="bg-warm-white text-gray-900 dark:bg-matte-black dark:text-white transition-colors duration-300">
       {/* Cinematic Hero for Services */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-matte-black text-white">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-luminosity" />

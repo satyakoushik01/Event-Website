@@ -39,7 +39,7 @@ export default function Events() {
   const totalPages = Math.ceil(total / 12);
 
   return (
-    <div className="bg-warm-white min-h-screen pb-32">
+    <div className="bg-warm-white text-gray-900 dark:bg-matte-black dark:text-white transition-colors duration-300 min-h-screen pb-32">
       <section className="pt-40 pb-20 px-6 lg:px-8 border-b border-gray-200 text-center">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}

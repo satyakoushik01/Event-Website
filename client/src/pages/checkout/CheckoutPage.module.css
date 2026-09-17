@@ -1,0 +1,145 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg-light);
+  padding: 4rem 2rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 3rem;
+}
+
+.form {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+.inputGroup {
+  margin-bottom: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.input {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: var(--text-dark);
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.input:focus {
+  border-color: var(--primary);
+  background: rgba(255,255,255,0.1);
+}
+
+.summary {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(var(--glass-blur));
+  height: fit-content;
+}
+
+.summary h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 1rem;
+}
+
+.eventInfo {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.ticketControl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.counter button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.totals .line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+}
+
+.totalLine {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}

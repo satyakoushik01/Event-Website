@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-matte-black: #0a0a0a;
   --color-charcoal: #1a1a1a;
@@ -41,11 +43,11 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: var(--color-warm-white);
+    @apply bg-warm-white dark:bg-matte-black transition-colors duration-300;
   }
 
   body {
-    @apply bg-warm-white text-matte-black antialiased overflow-x-hidden;
+    @apply bg-warm-white text-matte-black dark:bg-matte-black dark:text-white antialiased overflow-x-hidden transition-colors duration-300;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 

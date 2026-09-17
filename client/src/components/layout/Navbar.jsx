@@ -3,11 +3,13 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
+import ThemeToggle from '../ThemeToggle';
 
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
   { to: '/vendors', label: 'Vendors' },
+  { to: '/events', label: 'Ongoing Events' },
   { to: '#client-stories', label: 'Client Stories' },
   { to: '/planner', label: 'Planner' },
   { to: '/about', label: 'About' },
@@ -37,7 +39,7 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       className="fixed top-0 left-0 right-0 z-50 pt-4 px-4 sm:px-6 lg:px-8 pointer-events-none"
     >
-      <div className="max-w-7xl mx-auto glass-panel rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-white/60">
+      <div className="max-w-7xl mx-auto glass-panel rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-white/60 dark:border-white/10 dark:bg-black/60">
         <Link to="/" className="flex items-center group">
           <motion.img 
             src="/moments-hub-logo.png"
@@ -48,7 +50,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <div className="hidden lg:flex items-center gap-1 bg-white/30 rounded-full px-2 py-1">
+        <div className="hidden lg:flex items-center gap-1 bg-white/30 dark:bg-white/10 rounded-full px-2 py-1">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.to || (link.to !== '/' && location.pathname.startsWith(link.to));
             return (
@@ -57,13 +59,13 @@ export default function Navbar() {
                 to={link.to}
                 className="relative px-4 py-2 rounded-full text-sm font-medium transition-colors"
               >
-                <span className={`relative z-10 ${isActive ? 'text-white' : 'text-charcoal hover:text-matte-black'}`}>
+                <span className={`relative z-10 ${isActive ? 'text-white' : 'text-charcoal dark:text-gray-200 hover:text-matte-black dark:hover:text-white'}`}>
                   {link.label}
                 </span>
                 {isActive && (
                   <motion.div
                     layoutId="navbar-indicator"
-                    className="absolute inset-0 bg-matte-black rounded-full shadow-md"
+                    className="absolute inset-0 bg-matte-black dark:bg-amber-500 rounded-full shadow-md"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -72,7 +74,8 @@ export default function Navbar() {
           })}
         </div>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4">
+          <ThemeToggle />
           {user ? (
             <>
               {isAdmin && (
@@ -94,7 +97,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="lg:hidden p-2 rounded-full text-charcoal hover:bg-white/50 transition-colors"
+          className="lg:hidden p-2 rounded-full text-charcoal dark:text-gray-200 hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -115,9 +118,13 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            className="absolute top-20 left-4 right-4 lg:hidden glass-panel rounded-2xl overflow-hidden pointer-events-auto shadow-2xl"
+            className="absolute top-20 left-4 right-4 lg:hidden glass-panel rounded-2xl overflow-hidden pointer-events-auto shadow-2xl dark:bg-slate-900/90 dark:border-white/10"
           >
             <div className="px-4 py-6 space-y-2">
+              <div className="flex items-center justify-between px-4 py-2 border-b border-white/20 dark:border-white/10 mb-2">
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Appearance</span>
+                <ThemeToggle />
+              </div>
               {navLinks.map((link) => (
                 <NavLink
                   key={link.to}
@@ -126,7 +133,7 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
                     `block px-4 py-3 rounded-xl text-base font-medium transition-all ${
-                      isActive ? 'bg-matte-black text-white' : 'text-charcoal hover:bg-white/40'
+                      isActive ? 'bg-matte-black text-white dark:bg-amber-500 dark:text-matte-black' : 'text-charcoal dark:text-gray-200 hover:bg-white/40 dark:hover:bg-white/10'
                     }`
                   }
                 >

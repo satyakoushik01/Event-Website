@@ -1,3 +1,4 @@
+// App.jsx - main routing for MomentsHub
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
@@ -9,11 +10,12 @@ import Contact from './pages/Contact';
 import Services from './pages/Services';
 import Vendors from './pages/Vendors';
 import VendorDetails from './pages/VendorDetails';
-import Events from './pages/Events';
-import EventDetails from './pages/EventDetails';
+import EventsPage from './pages/events/EventsPage';
+import EventDetailPage from './pages/events/EventDetailPage';
+import CheckoutPage from './pages/checkout/CheckoutPage';
+import ConfirmationPage from './pages/confirmation/ConfirmationPage';
 import EventPlanner from './pages/EventPlanner';
-import Checkout from './pages/Checkout';
-import CheckoutSuccess from './pages/CheckoutSuccess';
+import AdminEvents from './pages/admin/AdminEvents';
 
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -58,8 +60,10 @@ export default function App() {
         <Route path="vendors/transportation" element={<Vendors defaultCategory="Transportation" />} />
         <Route path="vendors/invitations" element={<Vendors defaultCategory="Invitations" />} />
         <Route path="vendors/:id" element={<VendorDetails />} />
-        <Route path="events" element={<Events />} />
-        <Route path="events/:id" element={<EventDetails />} />
+        <Route path="events" element={<EventsPage />} />
+        <Route path="events/:id" element={<EventDetailPage />} />
+        <Route path="events/:id/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+        <Route path="events/:id/confirmation" element={<ProtectedRoute><ConfirmationPage /></ProtectedRoute>} />
         <Route path="planner" element={<EventPlanner />} />
 
         <Route path="login" element={<Login />} />
@@ -77,14 +81,15 @@ export default function App() {
           <Route path="profile" element={<Profile />} />
         </Route>
 
-        <Route path="checkout/:vendorId" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-        <Route path="checkout/success/:bookingId" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
+        <Route path="checkout/:vendorId" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+        <Route path="checkout/success/:bookingId" element={<ProtectedRoute><ConfirmationPage /></ProtectedRoute>} />
 
         <Route path="*" element={<NotFound />} />
       </Route>
 
       <Route path="admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
         <Route index element={<AdminDashboard />} />
+        <Route path="events" element={<AdminEvents />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="vendors" element={<AdminVendors />} />
         <Route path="bookings" element={<AdminBookings />} />

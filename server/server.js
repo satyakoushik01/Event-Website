@@ -10,9 +10,6 @@ const errorHandler = require('./middleware/errorHandler');
 // Load environment variables
 dotenv.config();
 
-// Connect to database
-connectDB();
-
 const app = express();
 
 // Security middleware
@@ -71,8 +68,13 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Moments Events API running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-});
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Moments Events API running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  });
+};
+
+startServer();
 
 module.exports = app;

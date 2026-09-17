@@ -1,0 +1,39 @@
+.card {
+  min-width: 280px;
+  max-width: 280px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur));
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.imageWrapper {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+}
+
+.info {
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.date, .location {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  opacity: 0.8;
+}

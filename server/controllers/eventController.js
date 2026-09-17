@@ -5,7 +5,7 @@ const APIFeatures = require('../utils/apiFeatures');
 // @route   GET /api/events
 const getEvents = async (req, res, next) => {
   try {
-    const features = new APIFeatures(Event.find({ status: 'published' }), req.query)
+    const features = new APIFeatures(Event.find({ status: 'published', bookingStatus: 'OPEN' }), req.query)
       .search()
       .filter()
       .sort()

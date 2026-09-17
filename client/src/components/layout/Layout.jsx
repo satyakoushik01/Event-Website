@@ -6,7 +6,7 @@ import MIAConcierge from '../mia/MIAConcierge';
 
 // Ambient Background with noise and soft glowing orbs
 const CinematicBackground = () => (
-  <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-warm-white">
+  <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-warm-white dark:bg-matte-black transition-colors duration-300">
     <div className="absolute inset-0 bg-noise mix-blend-overlay opacity-50"></div>
     <motion.div
       animate={{
@@ -35,7 +35,7 @@ export default function Layout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen flex flex-col relative bg-matte-black">
+    <div className="min-h-screen flex flex-col relative bg-warm-white text-gray-900 dark:bg-matte-black dark:text-white transition-colors duration-300">
       <CinematicBackground />
       <Navbar />
       <AnimatePresence mode="wait">

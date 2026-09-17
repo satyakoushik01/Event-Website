@@ -1,16 +1,32 @@
 const createTransporter = require('../config/email');
 
 const sendEmail = async (options) => {
-  const transporter = createTransporter();
+  if (!process.env.SMTP_HOST || process.env.SMTP_HOST.includes('example') || process.env.SMTP_HOST.includes('mailtrap')) {
+    console.log('\n=================== [DEV MODE EMAIL LOG] ===================');
+    console.log(`To: ${options.email}`);
+    console.log(`Subject: ${options.subject}`);
+    console.log(`HTML: ${options.html.substring(0, 150)}...`);
+    console.log('============================================================\n');
+    return;
+  }
 
-  const mailOptions = {
-    from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
-    to: options.email,
-    subject: options.subject,
-    html: options.html,
-  };
-
-  await transporter.sendMail(mailOptions);
+  try {
+    const transporter = createTransporter();
+    const mailOptions = {
+      from: `${process.env.FROM_NAME || 'Moments Events'} <${process.env.FROM_EMAIL || 'noreply@momentsevents.com'}>`,
+      to: options.email,
+      subject: options.subject,
+      html: options.html,
+    };
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.warn('[SMTP Email Warning]:', err.message);
+    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+      console.log(`[DEV FALLBACK EMAIL] Logged email to ${options.email} due to SMTP error.`);
+      return;
+    }
+    throw err;
+  }
 };
 
 // Email templates

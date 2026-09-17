@@ -1,0 +1,112 @@
+export const events = [
+  {
+    id: "1",
+    slug: "diwali-dhamaka-night",
+    title: "Diwali Dhamaka Night",
+    category: "Festive Specials",
+    location: "Bangalore",
+    date: "2026-11-05",
+    time: "7:00 PM",
+    price: 1299,
+    images: ["https://images.unsplash.com/photo-1540324155974-7523202daa3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+    badge: "MOMENTS ORIGINAL",
+    description: "Celebrate Diwali with music, dance, and cultural performances.",
+    tags: ["Music", "Festive"]
+  },
+  {
+    id: "2",
+    slug: "navratri-garba-night",
+    title: "Navratri Garba Night",
+    category: "Festive Specials",
+    location: "Mumbai",
+    date: "2026-10-10",
+    time: "6:00 PM",
+    price: 899,
+    images: ["https://images.unsplash.com/photo-1601002573216-953e34b3e75e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+    badge: "PARTNER EVENT",
+    description: "Join the biggest Garba night in the city.",
+    tags: ["Dance", "Festive"]
+  },
+  {
+    id: "3",
+    slug: "christmas-special",
+    title: "Christmas Special",
+    category: "Festive Specials",
+    location: "Goa",
+    date: "2026-12-25",
+    time: "8:00 PM",
+    price: 1499,
+    images: ["https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+    badge: "MOMENTS ORIGINAL",
+    description: "Experience the magic of Christmas.",
+    tags: ["Party", "Festive"]
+  },
+  {
+    id: "4",
+    slug: "live-music-weekend",
+    title: "Live Music Weekend",
+    category: "Weekend Specials",
+    location: "Bangalore",
+    date: "2026-09-15",
+    time: "7:00 PM",
+    price: 1499,
+    images: ["https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+    badge: "MOMENTS ORIGINAL",
+    description: "Top bands performing live all weekend.",
+    tags: ["Live Band", "Music"]
+  },
+  {
+    id: "5",
+    slug: "stand-up-comedy",
+    title: "Stand-up Comedy Night",
+    category: "Weekend Specials",
+    location: "Mumbai",
+    date: "2026-09-20",
+    time: "8:00 PM",
+    price: 999,
+    images: ["https://images.unsplash.com/photo-1585699324551-f6c309eedeca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+    badge: "PARTNER EVENT",
+    description: "Laugh out loud with top comedians.",
+    tags: ["Comedy", "Show"]
+  },
+  {
+    id: "6",
+    slug: "dj-night-extravaganza",
+    title: "DJ Night Extravaganza",
+    category: "Weekend Specials",
+    location: "Goa",
+    date: "2026-09-28",
+    time: "9:00 PM",
+    price: 1999,
+    images: ["https://images.unsplash.com/photo-1574169208507-84376144848b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+    badge: "MOMENTS ORIGINAL",
+    description: "Dance the night away.",
+    tags: ["DJ", "Party"]
+  },
+  {
+    id: "7",
+    slug: "live-music-night",
+    title: "Live Music Night",
+    category: "Music",
+    location: "Phoenix Arena, Bangalore",
+    date: "2026-09-20",
+    time: "6:00 PM",
+    price: 1499,
+    images: ["https://images.unsplash.com/photo-1540039155732-68473638c4b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+    badge: "MOMENTS ORIGINAL",
+    description: "Experience an unforgettable evening with the best live bands, great food and amazing vibes. Join us for a spectacular Live Music Night featuring top artists, delicious food, and a vibrant atmosphere.",
+    tags: ["Music", "Live Band"],
+    ageRestriction: "16+",
+    organizer: "MomentsHub",
+    duration: "4 hours",
+    language: "English, Hindi",
+    highlights: [
+      "Live Band Performances",
+      "Food & Beverage Stalls",
+      "Exclusive VIP Seating"
+    ],
+    showTimings: ["10:00 AM", "2:00 PM", "6:00 PM", "9:00 PM"]
+  }
+];
+
+export default events;

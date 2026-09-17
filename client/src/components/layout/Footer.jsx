@@ -34,6 +34,9 @@ export default function Footer() {
               <li>
                 <Link to="/planner" className="hover:text-white transition-colors duration-300">The Planner</Link>
               </li>
+              <li>
+                <Link to="/admin" className="hover:text-champagne-gold text-champagne-gold/70 transition-colors duration-300 font-medium">Admin Dashboard</Link>
+              </li>
             </ul>
           </div>
 

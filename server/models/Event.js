@@ -33,6 +33,26 @@ const eventSchema = new mongoose.Schema(
         'Concerts',
       ],
     },
+    shortDescription: { type: String, maxlength: 300 },
+    isMomentsOriginal: { type: Boolean, default: false },
+    organizer: { type: String },
+    venue: { type: String },
+    dates: [{ type: Date }],
+    showTimings: [{ type: String }],
+    duration: { type: String },
+    language: { type: String },
+    ageRestriction: { type: String },
+    ticketTypes: [{
+        category: { type: String, required: true },
+        price: { type: Number, required: true },
+        capacity: { type: Number, required: true },
+        available: { type: Number, required: true },
+    }],
+    attendees: { expected: { type: Number, default: 0 }, confirmed: { type: Number, default: 0 } },
+    bookingStatus: { type: String, enum: ['OPEN','CLOSED'], default: 'OPEN' },
+    terms: { type: String },
+    cancellationPolicy: { type: String },
+    deletedAt: { type: Date, default: null },
     images: [
       {
         url: String,
@@ -93,9 +113,6 @@ const eventSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    attendees: {
-      expected: { type: Number, default: 0 },
-    },
     tags: [String],
   },
   {
@@ -115,5 +132,6 @@ eventSchema.pre('save', function (next) {
 
 eventSchema.index({ title: 'text', description: 'text', category: 'text' });
 eventSchema.index({ category: 1, status: 1 });
+eventSchema.index({ slug: 1, status: 1, bookingStatus: 1, deletedAt: 1 });
 
 module.exports = mongoose.model('Event', eventSchema);

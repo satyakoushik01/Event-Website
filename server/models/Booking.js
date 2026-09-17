@@ -10,7 +10,7 @@ const bookingSchema = new mongoose.Schema(
     vendor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Vendor',
-      required: true,
+      // optional for event bookings
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,
@@ -58,6 +58,39 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       enum: ['pending', 'confirmed', 'in-progress', 'completed', 'cancelled'],
       default: 'pending',
+    },
+    // New fields for event ticketing
+    bookingStatus: {
+      type: String,
+      enum: ['OPEN', 'CLOSED', 'SOLDOUT'],
+      default: 'OPEN',
+    },
+    ticketStatus: {
+      type: String,
+      enum: ['CONFIRMED', 'USED', 'CANCELLED', 'REFUNDED'],
+      default: 'CONFIRMED',
+    },
+    // Store the QR image data URL for printing on tickets
+    qrDataUrl: {
+      type: String,
+    },
+    ticketId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    qrReference: {
+      type: String,
+    },
+    emailNotificationStatus: {
+      type: String,
+      enum: ['PENDING', 'SENT', 'FAILED'],
+      default: 'PENDING',
+    },
+    smsNotificationStatus: {
+      type: String,
+      enum: ['PENDING', 'SENT', 'FAILED'],
+      default: 'PENDING',
     },
     notes: {
       type: String,

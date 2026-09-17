@@ -6,14 +6,68 @@ const APIFeatures = require('../utils/apiFeatures');
 // @route   POST /api/bookings
 const createBooking = async (req, res, next) => {
   try {
-    req.body.user = req.user.id;
-    const booking = await Booking.create(req.body);
+    const { eventId, ticketCategory, quantity, date, showTiming } = req.body;
 
-    // Create notification
+    // Validate required fields
+    if (!eventId || !ticketCategory || !quantity || !date || !showTiming) {
+      return res.status(400).json({ success: false, message: 'Missing required booking fields' });
+    }
+
+    // Fetch event and ticket type
+    const event = await require('../models/Event').findById(eventId);
+    if (!event) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
+    }
+
+    const ticketType = event.ticketTypes.find(t => t.category === ticketCategory);
+    if (!ticketType) {
+      return res.status(400).json({ success: false, message: 'Invalid ticket category for this event' });
+    }
+
+    // Ensure sufficient capacity (atomic check and decrement)
+    const updatedEvent = await require('../models/Event').findOneAndUpdate(
+      {
+        _id: eventId,
+        'ticketTypes.category': ticketCategory,
+        'ticketTypes.available': { $gte: quantity },
+      },
+      { $inc: { 'ticketTypes.$.available': -quantity } },
+      { new: true }
+    );
+    if (!updatedEvent) {
+      return res.status(400).json({ success: false, message: 'Not enough tickets available' });
+    }
+
+    // Calculate pricing
+    const subtotal = ticketType.price * quantity;
+    const taxRate = parseFloat(process.env.TAX_RATE) || 0.18;
+    const feeRate = parseFloat(process.env.CONVENIENCE_FEE_PERCENT) || 0.02;
+    const tax = parseFloat((subtotal * taxRate).toFixed(2));
+    const fee = parseFloat((subtotal * feeRate).toFixed(2));
+    const totalAmount = parseFloat((subtotal + tax + fee).toFixed(2));
+
+    // Build booking object
+    const bookingData = {
+      user: req.user.id,
+      event: eventId,
+      eventType: event.category,
+      ticketCategory,
+      quantity,
+      date,
+      showTiming,
+      totalAmount,
+      paymentStatus: 'unpaid',
+      bookingStatus: 'OPEN',
+      status: 'pending', // booking workflow status
+    };
+
+    const booking = await Booking.create(bookingData);
+
+    // Notification of creation (same as before)
     await Notification.create({
       user: req.user.id,
       title: 'Booking Created',
-      message: `Your booking for ${booking.eventType} has been created and is pending confirmation.`,
+      message: `Your booking for ${booking.eventType} has been created and is pending payment.`,
       type: 'booking',
       link: `/dashboard/bookings/${booking._id}`,
     });

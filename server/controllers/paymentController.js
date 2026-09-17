@@ -121,55 +121,72 @@ const verifyPayment = async (req, res, next) => {
       transaction.status = 'captured';
       await transaction.save();
 
-      // Update booking payment status
-      const booking = await Booking.findByIdAndUpdate(
+      // Update booking payment status and attach ticket info
+      const ticketId = require('../services/ticketService').generateTicketId();
+      const { qrDataUrl, payload } = await require('../services/ticketService').generateQRCode(ticketId);
+
+      // Update booking with ticket details
+      const updatedBooking = await Booking.findByIdAndUpdate(
         transaction.booking,
-        { paymentStatus: 'paid', status: 'confirmed', confirmedAt: Date.now() },
+        {
+          paymentStatus: 'paid',
+          status: 'confirmed',
+          confirmedAt: Date.now(),
+          ticketId,
+          qrReference: payload,
+          qrDataUrl,
+        },
         { new: true }
       ).populate('vendor', 'businessName').populate('user', 'name email phone');
 
-      // Create notification for the user
+      // Generate PDF ticket
+      const event = await require('../models/Event').findById(updatedBooking.event);
+      const pdfDoc = require('../services/ticketService').generatePDFTicket({
+        booking: updatedBooking,
+        event,
+        ticketId,
+        qrDataUrl,
+      });
+
+      // Prepare PDF buffer
+      const chunks = [];
+      pdfDoc.on('data', (chunk) => chunks.push(chunk));
+      pdfDoc.on('end', async () => {
+        const pdfBuffer = Buffer.concat(chunks);
+
+        // Send email with PDF attachment
+        const emailHtml = `<p>Dear ${updatedBooking.user.name},</p>
+          <p>Your booking for <strong>${event.title}</strong> is confirmed.</p>
+          <p>Ticket ID: ${ticketId}</p>`;
+        await require('../services/notificationService').sendEmail(
+          updatedBooking.user.email,
+          'Your MomentsHub Ticket Confirmation',
+          emailHtml,
+          [{ filename: `${ticketId}.pdf`, content: pdfBuffer }]
+        );
+
+        // Send SMS
+        const smsBody = `MomentsHub: Booking confirmed for ${event.title} on ${new Date(updatedBooking.date).toLocaleDateString()}. Ticket ID: ${ticketId}`;
+        await require('../services/notificationService').sendSMS(updatedBooking.user.phone, smsBody);
+      });
+
+      // Create notification for the user (existing)
       await Notification.create({
         user: transaction.user,
         title: 'Payment Successful',
-        message: `Your payment of ₹${transaction.amount.toLocaleString()} for ${booking?.vendor?.businessName || 'your booking'} was successful.`,
+        message: `Your payment of ₹${transaction.amount.toLocaleString()} for ${booking?.vendor?.businessName || 'your booking'} was successful. Ticket ID: ${ticketId}`,
         type: 'payment',
         link: `/dashboard/bookings/${transaction.booking}`,
       });
 
-      // ─────────────────────────────────────────────────────────────────────
-      // EMAIL SIMULATION
-      // To activate: npm install nodemailer, configure SMTP in .env, and replace
-      // this block with: await transporter.sendMail({ to, subject, html })
-      // ─────────────────────────────────────────────────────────────────────
-      console.log('[EMAIL SIMULATION] Booking confirmation email:');
-      console.log({
-        to: booking?.user?.email,
-        subject: `✅ Booking Confirmed with ${booking?.vendor?.businessName}`,
-        body: `Dear ${booking?.user?.name}, your booking (ID: ${transaction.booking}) has been confirmed. Amount paid: ₹${transaction.amount.toLocaleString()}. Thank you for choosing Moments Group.`,
-      });
-
-      // ─────────────────────────────────────────────────────────────────────
-      // SMS SIMULATION
-      // To activate: npm install twilio, configure TWILIO_* vars in .env, and
-      // replace this block with: await twilioClient.messages.create({ to, body })
-      // ─────────────────────────────────────────────────────────────────────
-      console.log('[SMS SIMULATION] Booking confirmation SMS:');
-      console.log({
-        to: booking?.user?.phone,
-        body: `Moments Group: Booking confirmed! Vendor: ${booking?.vendor?.businessName}. Amount: ₹${transaction.amount.toLocaleString()}. Payment ID: ${razorpay_payment_id}`,
-      });
-
+      // Respond to client (do not wait for email/SMS streams to finish)
       res.status(200).json({
         success: true,
         message: 'Payment verified successfully',
-        transaction: {
-          id: transaction._id,
-          status: transaction.status,
-          amount: transaction.amount,
-          paymentId: razorpay_payment_id,
-        },
+        ticketId,
+        qrDataUrl,
       });
+
     } else {
       // Mark transaction as failed
       transaction.status = 'failed';

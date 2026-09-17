@@ -29,6 +29,10 @@ export default function EventDetails() {
   if (!event) return <div className="text-center py-40 text-gray-400 font-light">Event not found</div>;
 
   const coverUrl = event.coverImage?.url || PLACEHOLDER_EVENT_IMAGE;
+  const [selectedDate, setSelectedDate] = useState(event.dates && event.dates.length > 0 ? new Date(event.dates[0]).toISOString().split('T')[0] : '');
+  const [selectedTicketCategory, setSelectedTicketCategory] = useState('');
+  const [ticketQuantity, setTicketQuantity] = useState(1);
+
 
   return (
     <div className="bg-warm-white">
@@ -117,8 +121,82 @@ export default function EventDetails() {
                 </div>
               )}
 
+              {event.dates && event.dates.length > 0 && (
+                <div className="mb-6">
+                  <label className="block text-xs uppercase tracking-widest text-gray-400 mb-2">Select Date</label>
+                  <select
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-gray-200 bg-white text-matte-black text-sm focus:outline-none focus:border-champagne-gold"
+                  >
+                    {event.dates.map((d) => {
+                      const dateStr = new Date(d).toISOString().split('T')[0];
+                      return (
+                        <option key={d} value={dateStr}>
+                          {new Date(d).toLocaleDateString('en-IN', { dateStyle: 'medium' })}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              )}
+
+              {event.showTimings && event.showTimings.length > 0 && (
+                <div className="mb-8 pb-8 border-b border-gray-100">
+                  <label className="block text-xs uppercase tracking-widest text-gray-400 mb-2">Select Timing</label>
+                  <div className="flex flex-wrap gap-2">
+                    {event.showTimings.map((time) => (
+                      <button
+                        key={time}
+                        onClick={() => setSelectedTiming(time)}
+                        className={`px-4 py-2 rounded-xl text-sm transition-all ${
+                          selectedTiming === time
+                            ? 'bg-matte-black text-white'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {event.ticketTypes && event.ticketTypes.length > 0 && (
+                <>
+                  {/* Ticket Category Selection */}
+                  <div className="mb-6">
+                    <label className="block text-xs uppercase tracking-widest text-gray-400 mb-2">Ticket Category *</label>
+                    <select
+                      value={selectedTicketCategory}
+                      onChange={(e) => setSelectedTicketCategory(e.target.value)}
+                      className="w-full p-3 rounded-xl border border-gray-200 bg-white text-matte-black text-sm focus:outline-none focus:border-champagne-gold"
+                    >
+                      {event.ticketTypes.map((tt) => (
+                        <option key={tt.category} value={tt.category}>
+                          {tt.category} – ₹{tt.price?.toLocaleString()}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Quantity */}
+                  <div className="mb-6">
+                    <label className="block text-xs uppercase tracking-widest text-gray-400 mb-2">Quantity *</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max={event.ticketTypes.find(t => t.category === selectedTicketCategory)?.available || 1}
+                      value={ticketQuantity}
+                      onChange={(e) => setTicketQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-full p-3 rounded-xl border border-gray-200 bg-white text-matte-black text-sm focus:outline-none focus:border-champagne-gold"
+                    />
+                  </div>
+                </>
+              )}
+
               <div className="space-y-4 mb-8 pb-8 border-b border-gray-100">
-                {event.date && (
+                {event.date && !event.dates && (
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-400 font-light uppercase tracking-wider text-xs">Date</span>
                     <span className="text-matte-black font-medium">
@@ -134,8 +212,11 @@ export default function EventDetails() {
                 )}
               </div>
 
-              <Link to="/planner" className="block">
-                <Button className="w-full" size="lg" variant="gold">Plan a Similar Event</Button>
+              <Link to={`/events/${id}/checkout?date=${selectedDate}&timing=${encodeURIComponent(selectedTiming)}&category=${encodeURIComponent(selectedTicketCategory)}&qty=${ticketQuantity}`} className="block">
+                <Button className="w-full" size="lg" variant="gold">Book Tickets</Button>
+              </Link>
+              <Link to="/planner" className="block mt-3">
+                <Button className="w-full" size="lg" variant="outline">Plan a Similar Event</Button>
               </Link>
               <Link to="/contact" className="block mt-3">
                 <Button className="w-full" size="lg" variant="outline">Enquire Now</Button>
