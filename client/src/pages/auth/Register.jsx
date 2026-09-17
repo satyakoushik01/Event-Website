@@ -87,6 +87,14 @@ export default function Register() {
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               placeholder="+91 98765 43210"
             />
+            <select
+              value={form.role || 'client'}
+              onChange={(e) => setForm({ ...form, role: e.target.value })}
+              className="px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-champagne-gold w-full"
+            >
+              <option value="client">Client</option>
+              <option value="partner">Partner</option>
+            </select>
             <Input
               label="Password"
               type="password"

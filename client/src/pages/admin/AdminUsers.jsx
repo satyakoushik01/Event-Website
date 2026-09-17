@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getUsers, deleteUser } from '../../api/admin';
+import { getRegisteredUsers, deleteRegisteredUser } from '../../utils/localAuth';
 import Loader from '../../components/ui/Loader';
 
 export default function AdminUsers() {
@@ -10,20 +10,19 @@ export default function AdminUsers() {
 
   const fetchUsers = () => {
     setLoading(true);
-    getUsers()
-      .then(({ data }) => setUsers(data.users || []))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+    const users = getRegisteredUsers();
+    setUsers(users);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (id, name) => {
+  const handleDelete = async (email, name) => {
     if (!window.confirm(`Are you sure you want to delete user account "${name}"?`)) return;
     try {
-      await deleteUser(id);
+      await deleteRegisteredUser(email);
       fetchUsers();
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to delete user');
@@ -89,7 +88,7 @@ export default function AdminUsers() {
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {filteredUsers.map((u) => (
-                  <tr key={u._id} className="hover:bg-white/50 transition-colors">
+                  <tr key={u.email} className="hover:bg-white/50 transition-colors">
                     <td className="py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full bg-matte-black text-champagne-gold flex items-center justify-center font-bold text-xs uppercase shadow-sm">
@@ -137,7 +136,7 @@ export default function AdminUsers() {
                     <td className="py-4 text-right">
                       {u.role !== 'admin' ? (
                         <button
-                          onClick={() => handleDelete(u._id, u.name)}
+                          onClick={() => handleDelete(u.email, u.name)}
                           className="px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium border border-red-200"
                         >
                           Delete
