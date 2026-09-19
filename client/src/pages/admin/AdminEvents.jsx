@@ -29,24 +29,7 @@ export default function AdminEvents() {
   return (
     <div className="min-h-screen bg-gray-50 flex text-gray-800 font-sans">
       
-      {/* Sidebar Mock */}
-      <div className="w-64 bg-matte-black text-white shrink-0 hidden md:block">
-        <div className="p-6 border-b border-white/10 flex items-center gap-3">
-          <img src="/logo.png" alt="Logo" className="h-8" />
-          <span className="font-display tracking-widest text-sm">MomentsHub</span>
-        </div>
-        <div className="p-4 space-y-1 text-sm font-light">
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Dashboard</div>
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Users</div>
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Vendors</div>
-          <div className="px-4 py-2 rounded bg-champagne-gold/10 text-champagne-gold font-medium cursor-pointer">Events & Shows</div>
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Bookings</div>
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Payments</div>
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Notifications</div>
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Reports</div>
-          <div className="px-4 py-2 rounded text-white/50 hover:bg-white/5 cursor-pointer">Settings</div>
-        </div>
-      </div>
+      
 
       {/* Main Content */}
       <div className="flex-1 p-8 overflow-y-auto">

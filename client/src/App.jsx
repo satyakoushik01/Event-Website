@@ -15,6 +15,7 @@ import EventDetailPage from './pages/events/EventDetailPage';
 import CheckoutPage from './pages/checkout/CheckoutPage';
 import ConfirmationPage from './pages/confirmation/ConfirmationPage';
 import EventPlanner from './pages/EventPlanner';
+import ClientStoriesPage from './pages/ClientStoriesPage';
 import AdminEvents from './pages/admin/AdminEvents';
 
 import Login from './pages/auth/Login';
@@ -65,6 +66,7 @@ export default function App() {
         <Route path="events/:id/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
         <Route path="events/:id/confirmation" element={<ProtectedRoute><ConfirmationPage /></ProtectedRoute>} />
         <Route path="planner" element={<EventPlanner />} />
+          <Route path="client-stories" element={<ClientStoriesPage />} />
 
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

@@ -6,9 +6,9 @@ import Textarea from '../components/ui/Textarea';
 import Button from '../components/ui/Button';
 
 const contactDetails = [
-  { label: 'Email', value: 'concierge@momentsevents.com', href: 'mailto:concierge@momentsevents.com' },
-  { label: 'Phone', value: '+91 98765 43210', href: 'tel:+919876543210' },
-  { label: 'Studio', value: 'Mumbai, Maharashtra', href: null },
+  { label: 'Email', value: 'momentshubinfo@gmail.com', href: 'mailto:momentshubinfo@gmail.com' },
+  { label: 'Phone', value: '+91 8977557685', href: 'tel:+91 8977557685' },
+  { label: 'Office', value: 'Vijayawada, Andhra Pradesh', href: null },
   { label: 'Hours', value: 'Monday – Saturday, 9AM–7PM IST', href: null },
 ];
 

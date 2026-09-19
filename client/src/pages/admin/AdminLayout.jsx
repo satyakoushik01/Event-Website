@@ -1,4 +1,5 @@
 import { NavLink, Outlet, Link } from 'react-router-dom';
+import { FaCreditCard, FaBell, FaChartBar, FaCog } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 
 const links = [
@@ -75,13 +76,17 @@ const links = [
       </svg>
     ),
   },
+  { to: '/admin/payments', label: 'Payments', icon: <FaCreditCard /> },
+  { to: '/admin/notifications', label: 'Notifications', icon: <FaBell /> },
+  { to: '/admin/reports', label: 'Reports', icon: <FaChartBar /> },
+  { to: '/admin/settings', label: 'Settings', icon: <FaCog /> },
 ];
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-warm-white pt-20">
+    <div className="min-h-screen bg-warm-white pt-0">
       {/* Header bar */}
       <div className="bg-matte-black text-white py-8 px-6 lg:px-12 border-b border-white/10 shadow-2xl">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -130,7 +135,7 @@ export default function AdminLayout() {
       </div>
 
       {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto py-10">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <aside className="lg:w-64 shrink-0">

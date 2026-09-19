@@ -3,14 +3,14 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
-import ThemeToggle from '../ThemeToggle';
+
 
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
   { to: '/vendors', label: 'Vendors' },
   { to: '/events', label: 'Ongoing Events' },
-  { to: '#client-stories', label: 'Client Stories' },
+  { to: '/client-stories', label: 'Client Stories' },
   { to: '/planner', label: 'Planner' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
@@ -75,7 +75,7 @@ export default function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-4">
-          <ThemeToggle />
+          
           {user ? (
             <>
               {isAdmin && (
@@ -121,10 +121,7 @@ export default function Navbar() {
             className="absolute top-20 left-4 right-4 lg:hidden glass-panel rounded-2xl overflow-hidden pointer-events-auto shadow-2xl dark:bg-slate-900/90 dark:border-white/10"
           >
             <div className="px-4 py-6 space-y-2">
-              <div className="flex items-center justify-between px-4 py-2 border-b border-white/20 dark:border-white/10 mb-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Appearance</span>
-                <ThemeToggle />
-              </div>
+              
               {navLinks.map((link) => (
                 <NavLink
                   key={link.to}
